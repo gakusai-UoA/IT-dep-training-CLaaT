@@ -1,0 +1,12 @@
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#ccfbf1', 'primaryTextColor': '#134e4a', 'primaryBorderColor': '#14b8a6', 'lineColor': '#0f766e', 'secondaryColor': '#f0fdfa', 'tertiaryColor': '#ffffff' }}}%%
+sequenceDiagram
+    participant Client as Frontend (Browser)
+    participant Server as Backend (API)
+    participant DB as Database
+
+    Client->>Server: HTTP Request
+    Note over Client,Server: e.g. GET /users
+    Server->>DB: Query Data
+    DB-->>Server: Return Data
+    Server-->>Client: HTTP Response
+    Note over Server,Client: JSON Data (Status 200 OK)

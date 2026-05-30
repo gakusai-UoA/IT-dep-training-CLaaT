@@ -1,0 +1,22 @@
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#ccfbf1', 'primaryTextColor': '#134e4a', 'primaryBorderColor': '#14b8a6', 'lineColor': '#0f766e', 'secondaryColor': '#f0fdfa', 'tertiaryColor': '#ffffff' }}}%%
+graph LR
+    subgraph ローカルPC
+        WD["作業ディレクトリ<br/>(Working Directory)"]
+        Idx["ステージングエリア<br/>(Staging Area)"]
+        LR["ローカルリポジトリ<br/>(Local Repository)"]
+        
+        WD -- "1. git add" --> Idx
+        Idx -- "2. git commit" --> LR
+    end
+
+    subgraph GitHub
+        RR["リモートリポジトリ<br/>(Remote Repository)"]
+    end
+
+    LR -- "3. git push" --> RR
+    RR -- "4. git pull<br/>(DL & 反映)" --> WD
+    
+    style WD fill:#fef08a,stroke:#ca8a04
+    style Idx fill:#fef08a,stroke:#ca8a04
+    style LR fill:#fef08a,stroke:#ca8a04
+    style RR fill:#bfdbfe,stroke:#2563eb,stroke-width:2px

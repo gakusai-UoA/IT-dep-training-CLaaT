@@ -1,0 +1,538 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Part 1 Training</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+
+  <link rel="stylesheet" href="playground.css">
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14" ga4id=""></google-codelab-analytics>
+  <google-codelab codelab-gaid=""
+                  codelab-ga4id=""
+                  id="part-1"
+                  title="Part 1 Training"
+                  environment="web"
+                  feedback-link="https://github.com/gakusai-UoA/sosho-2026">
+    
+      <google-codelab-step label="自己紹介" duration="2">
+        <ul>
+<li><strong>名前</strong>: しゃけのきりみ。 (会津大学 学部3年生)</li>
+<li><strong>役割</strong>: IT部 創設者・初代部長 / 公開サイト責任者</li>
+<li><strong>実績</strong>: 学園祭実行委員会に <strong>「IT部」</strong> を新設。 受付DX、備品管理システム、インフラ構築などを統括。</li>
+</ul>
+<h2 is-upgraded>IT部のミッションと「現実」</h2>
+<p>IT部は単なる「コードを書く部署」ではありませんでした。</p>
+<ul>
+<li><strong>ミッション</strong>: 学園祭運営の「効率化」と「体験向上」</li>
+<li><strong>現地のリアル</strong>: 開発（コーディング）は業務の<strong>5割</strong>。</li>
+<li><strong>残りの5割</strong>: 泥臭い「ヒアリング」「調整」「要件定義」。</li>
+</ul>
+<p>技術的に優れたシステムでも、現場のオペレーションに馴染まなければ「不便な道具」になってしまう。</p>
+<h2 is-upgraded>IT部は「IT部」ではない</h2>
+<p>この1年で得た最大の教訓、そして本研修の指針です。</p>
+<ul>
+<li><strong>技術は「手段」</strong>: 目的は学園祭の価値を最大化すること。</li>
+<li><strong>ユーザー体験がすべて</strong>: 使う人が幸せにならないDXは失敗。</li>
+<li><strong>失敗こそ収穫</strong>: 泥臭い失敗を積み重ねた先に、真のスマートさがある。</li>
+</ul>
+<p><strong>「技術を手段として、目的を見失わないこと」</strong></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="導入：IT技術で何を実現するのか" duration="2">
+        <p>私たちの活動は、コードを書くこと自体が目的ではありません。 テクノロジーを手段として、<strong>学園祭の価値を最大化する</strong>ことが真の目的です。</p>
+<h2 is-upgraded>3つのコアバリュー</h2>
+<ol type="1">
+<li><strong>Experience (体験)</strong> 来場者が「迷わない」「待たされない」。快適な回遊体験を提供します。</li>
+<li><strong>Efficiency (効率)</strong> 実行委員の裏方業務を自動化し、クリエイティブな活動に時間を割けるようにします。</li>
+<li><strong>Connection (繋がり)</strong> リアルな場とデジタルの情報を結びつけ、新しいコミュニケーションを生み出します。</li>
+</ol>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Webアプリケーションの構造設計" duration="2">
+        <p>私たちが構築するシステムは、堅牢な<strong>クライアント/サーバーアーキテクチャ</strong>を採用しています。 各層の役割を深く理解しましょう。</p>
+<h2 is-upgraded>2-1. Frontend (Client Side)</h2>
+<p><strong>「ユーザー体験の最前線」</strong></p>
+<ul>
+<li><strong>技術スタック</strong>: React, TypeScript, Tailwind CSS</li>
+<li><strong>動作環境</strong>: ユーザーのブラウザ（スマートフォン、PC）</li>
+<li><strong>主な責務</strong>: <ul>
+<li><strong>Presentation</strong>: データを美しく、分かりやすく表示する。</li>
+<li><strong>Interaction</strong>: タップ、スクロールなどの操作に即座に反応する。</li>
+<li><strong>State Management</strong>: 「今、何を表示しているか」を管理する。</li>
+</ul>
+</li>
+</ul>
+<h2 is-upgraded>2-2. Backend (Server Side)</h2>
+<p><strong>「システムの頭脳・縁の下の力持ち」</strong></p>
+<p>ユーザーには直接見えませんが、裏側で情報の「計算・加工・保存」をすべて引き受けている場所です。</p>
+<ul>
+<li><strong>役割を例えるなら</strong>: レストランの <strong>「厨房（キッチン）」</strong><ul>
+<li>客席（フロントエンド）からの注文を受けて、料理（データ）を作り、提供（レスポンス）をします。</li>
+</ul>
+</li>
+<li><strong>主な仕事内容</strong>: <ul>
+<li><strong>計算・判定 (Logic)</strong>: 「今は投票期間内か？」「この人は2回投票していないか？」などのルールを判断します。</li>
+<li><strong>データの保存 (Persistence)</strong>: 集まった情報をデータベースに確実に保存し、いつでも取り出せるようにします。</li>
+<li><strong>安全を守る (Security)</strong>: 個人情報や大事なデータが盗まれないよう、厳密なセキュリティで守ります。</li>
+</ul>
+</li>
+<li><strong>動作環境</strong>: 世界中に分散された <strong>「エッジサーバー」</strong> （どこからアクセスしても素早く反応するサーバー）で動いています。</li>
+</ul>
+<h2 is-upgraded>2-3. API (Application Programming Interface)</h2>
+<p class="image-container"><img alt="API Architecture" src="img/d0f42917aba8c75d.png"></p>
+<p><strong>「フロントとバックを繋ぐ架け橋」</strong></p>
+<p>2つの異なるシステムが会話するための <strong>契約（プロトコル）</strong> です。</p>
+<ol type="1">
+<li><strong>Request (要求)</strong>: Frontend -&gt; Backend <ul>
+<li>例: <code>POST /api/votes</code> (投票したい！)</li>
+<li>データ: <code>{ boothId: "B-123", userId: "U-999" }</code></li>
+</ul>
+</li>
+<li><strong>Processing (処理)</strong>: Backend <ul>
+<li>検証 -&gt; 保存 -&gt; 集計</li>
+</ul>
+</li>
+<li><strong>Response (応答)</strong>: Backend -&gt; Frontend <ul>
+<li>例: <code>200 OK</code> (成功したよ！)</li>
+<li>データ: <code>{ currentVotes: 50, message: "投票完了" }</code></li>
+</ul>
+</li>
+</ol>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="JavaScript の歴史と現在" duration="2">
+        <p>私たちが学ぶ言語の背景を知っておきましょう。</p>
+<h2 is-upgraded>The History</h2>
+<ul>
+<li><strong>1995年</strong>: ブラウザで簡単なアニメーションをするために誕生。</li>
+<li><strong>2009年 (ES5)</strong>: 標準化が進むが、まだ機能不足。</li>
+<li><strong>2015年 (ES6 / ES2015)</strong>: <strong>革命的アップデート</strong>。<code>const</code> <code>let</code> <code>arrow function</code> などが登場し、本格的なアプリ開発が可能に。</li>
+</ul>
+<h2 is-upgraded>Modern JavaScript</h2>
+<p>現在使われているのは「モダンJavaScript」と呼ばれるものです。 古い解説記事（<code>var</code>を使っているものなど）は、現在の開発には適さない場合があるため注意が必要です。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="TypeScriptへの道" duration="2">
+        <p>なぜ、JavaScriptではなく<strong>TypeScript</strong>を使うのでしょうか？</p>
+<ul>
+<li><strong>JavaScript (JS)</strong>: <strong>動的型付け言語</strong><ul>
+<li>実行するまでエラーがわからない。</li>
+<li>自由だが、大規模開発では「何が入っているかわからない変数」がバグの温床になる。</li>
+</ul>
+</li>
+<li><strong>TypeScript (TS)</strong>: <strong>静的型付け言語</strong><ul>
+<li>コードを書いている瞬間にエラー検知が可能。</li>
+<li><strong>「コンパイル」</strong> という工程を経て、安全なJavaScriptに変換される。</li>
+</ul>
+</li>
+</ul>
+<p><strong>「転ばぬ先の杖」</strong> として、現代のWeb開発ではTypeScriptがデファクトスタンダードです。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="変数 (Variables) の詳細" duration="2">
+        <p>変数は、<strong>コンピュータのメモリ（記憶場所）にあるデータに「名前ラベル」を貼って管理する</strong>仕組みです。 まずは、複数のデータが混ざらないように <strong>「名前を書いたラベルを貼った、データの置き場所」</strong> だとイメージしましょう。</p>
+<h2 is-upgraded>宣言 (Declaration) と 代入 (Assignment)</h2>
+<pre><code language="language-javascript" class="language-javascript">// 1. 宣言: 「age」という名前の置き場所（メモリ領域）を確保する
+let age;
+
+// 2. 代入: その場所に数値を「記憶させる」
+age = 20;
+
+// 3. 初期化 (宣言と代入を同時におこなう)
+const name = &#34;Shake&#34;;
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="なぜ var は使わないのか？ (コラム)" duration="2">
+        <p>昔のJavaScriptにあった <code>var</code> は、メモリ上の「置き場所」が有効な範囲（スコープ）が曖昧で、意図しない場所から中身が書き換わってしまうなどのトラブルが絶えませんでした。</p>
+<p>現代のWeb開発では、バグを防ぐために <strong><code>const</code></strong></p>
+<p><strong> と </strong></p>
+<p><strong><code>let</code></strong></p>
+<p><strong> 以外は使いません。</strong></p>
+<p>古いネットの記事などでは <code>var</code> が登場することがありますが、最新のルールではないため、真似をしないように注意しましょう。</p>
+<h2 is-upgraded>5-2. const と let：使い分けの極意</h2>
+<p><strong>「基本はすべて </strong></p>
+<p><strong><code>const</code></strong></p>
+<p><strong> で書く」</strong> のが現代のエンジニアの作法です。</p>
+<ul>
+<li><strong><code>const</code></strong><strong> (定数)</strong><ul>
+<li><strong>上書き禁止。</strong> 開発の 9 割以上で使用します。</li>
+<li>「中身が変わらない」という確信が持てるため、バグを劇的に防げます。</li>
+</ul>
+</li>
+<li><strong><code>let</code></strong><strong> (変数)</strong><ul>
+<li><strong>上書きOK。</strong></li>
+<li>合計金額の計算や、カウントアップなど、どうしても値を更新したい時だけ使います。</li>
+</ul>
+</li>
+</ul>
+<p><strong>エンジニアの鉄則：迷ったら </strong></p>
+<p><strong><code>const</code></strong> すべてを <code>const</code> で書き始め、エラー（上書きエラー）が出て初めて <code>let</code> を検討するのが、最も安全でスマートな書き方です。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="定数と再代入のリスク管理 (練習問題)" duration="2">
+        <p>値を後から変更する可能性がある変数には <code>let</code> を、変更してはいけない変数には <code>const</code> を使います。 以下のコードで、ユーザー名は変更不可、現在のレベルは変更可能にするには、それぞれどちらを使いますか？</p>
+<pre><code language="language-javascript" class="language-javascript">____ userName = &#34;Shake&#34;; // 変更不可にしたい
+____ currentLevel = 1;   // 後で変更したい
+
+// userName = &#34;Taro&#34;; // これはエラーになるべき
+currentLevel = 2;     // これはOK
+
+console.log(userName);
+console.log(currentLevel);
+
+// @test: typeof userName !== &#39;undefined&#39; &amp;&amp; userName === &#34;Shake&#34;
+// @test: typeof currentLevel !== &#39;undefined&#39; &amp;&amp; currentLevel === 2
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="定数と再代入のリスク管理 (解説)" duration="2">
+        <pre><code language="language-javascript" class="language-javascript">const userName = &#34;Shake&#34;; // 変更不可
+let currentLevel = 1; // 変更可能
+</code></pre>
+<ul>
+<li><strong><code>const</code></strong>: 再代入不可（定数）。基本的にはこちらを使います。</li>
+<li><strong><code>let</code></strong>: 再代入可能（変数）。カウンターや状態管理など、値が変わるものに使います。</li>
+</ul>
+<h2 is-upgraded>5-3. 命名規則 (Naming Conventions)</h2>
+<p>コードは <strong>「書く時間」より「読まれる時間」の方が圧倒的に長い</strong> です。 未来の自分やチームメイトのために、分かりやすい名前をつけましょう。</p>
+<h2 is-upgraded>1. キャメルケース (camelCase)</h2>
+<p>先頭は小文字、区切りは大文字。<strong>変数名や関数名</strong> で最も一般的に使われます。</p>
+<ul>
+<li><code>studentId</code>, <code>isLoggedIn</code>, <code>fetchUserData</code></li>
+<li><code>StudentId</code> (クラスやコンポーネントに見える)</li>
+<li><code>student_id</code> (データベースのカラム名などに見える)</li>
+</ul>
+<h2 is-upgraded>2. パスカルケース (PascalCase)</h2>
+<p>先頭も区切りも大文字。<strong>コンポーネント名、クラス名、型名（Type/Interface）</strong> に使います。</p>
+<ul>
+<li><code>StudentList</code>, <code>UserConfig</code>, <code>UserType</code></li>
+<li><code>studentList</code> (ただの変数に見える)</li>
+</ul>
+<h2 is-upgraded>3. ローマ字は原則NG</h2>
+<p>プログラミングは英語がベースです。将来的にAIにコードを解説させたり、外部のドキュメントを読んだりする際の妨げになるため、<strong>日本語をローマ字にした名前は絶対に避けましょう。</strong></p>
+<ul>
+<li><code>namae</code>, <code>gakuseiId</code>, <code>shohin_list</code></li>
+<li><code>name</code>, <code>studentId</code>, <code>productList</code></li>
+</ul>
+<p><strong>Tip</strong>: 適切な英単語が思い浮かばない時は、DeepLなどの翻訳ツールやGeminiに聞けば一瞬で答えを教えてくれます！</p>
+<h2 is-upgraded>意味のある名前を付ける</h2>
+<ul>
+<li><code>const d = 100;</code> (dって何？)</li>
+<li><code>const maxDiscount = 100;</code> (最大割引額だとすぐわかる)</li>
+</ul>
+<p>名前には「何が入っているか」だけでなく、<strong>「どんな役割か（Role）」</strong> を込めましょう。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="データ型 (Data Types) Deep Dive" duration="2">
+        <p>JavaScriptのデータ型は、大きく <strong>プリミティブ型</strong> と <strong>オブジェクト型</strong> に分かれます。 まずはプリミティブ型（基本型）を極めましょう。</p>
+<ol type="1">
+<li><strong>string</strong> (文字列)</li>
+<li><strong>number</strong> (数値)</li>
+<li><strong>boolean</strong> (真偽値)</li>
+<li><strong>null</strong></li>
+<li><strong>undefined</strong></li>
+</ol>
+<h2 is-upgraded>6-1. String (文字列) の操作</h2>
+<p>文字列(文字の連続)を取り扱う型です。</p>
+<h2 is-upgraded>連結と展開 (Template Literals)</h2>
+<p>文字列をつなぐ方法は2つあります。現代では <strong>「テンプレートリテラル (バッククォート ` )」</strong> を使うのが主流です。</p>
+<pre><code language="language-javascript" class="language-javascript">const firstName = &#34;Taro&#34;;
+const lastName = &#34;Yamada&#34;;
+
+// 古い書き方 (＋で繋ぐ)
+const fullName1 = firstName + &#34; &#34; + lastName;
+
+// モダンな書き方 (バッククォート \` の中で ${} を使って変数を埋め込む)
+const fullName2 = `${firstName} ${lastName}`;
+console.log(fullName2); // &#34;Taro Yamada&#34;
+</code></pre>
+<h2 is-upgraded>プロパティへのアクセス</h2>
+<p>文字列は、「文字数」などの情報を持っています。</p>
+<pre><code language="language-javascript" class="language-javascript">// .length で長さを取得
+console.log(firstName.length); // 4
+</code></pre>
+<h2 is-upgraded>6-2. Number (数値) と演算</h2>
+<p>JavaScriptでは、整数(integer)も浮動小数点数(float)もすべて <code>number</code> 型です。 区別はありません。</p>
+<pre><code language="language-javascript" class="language-javascript">const integer = 10;
+const float = 0.5;
+
+// 演算子 (Operator)
+console.log(10 + 5); // 15 (加算)
+console.log(10 - 5); // 5 (減算)
+console.log(10 * 5); // 50 (乗算)
+console.log(10 / 2); // 5 (除算)
+</code></pre>
+<h2 is-upgraded>剰余演算 (Modulo) <code>%</code></h2>
+<p>「割り算の余り」を求めます。</p>
+<pre><code language="language-javascript" class="language-javascript">console.log(10 % 3); // 1 (10 ÷ 3 = 3 余り 1)
+</code></pre>
+<p>ループ処理で「3回に1回だけ処理する」などの制御によく使います。</p>
+<h2 is-upgraded>6-3. Boolean (真偽値) と論理演算</h2>
+<p><strong>プログラミングの「頭脳」</strong> となる部分です。 <code>true</code> か <code>false</code> で世界を判定します。</p>
+<h2 is-upgraded>比較演算子</h2>
+<ul>
+<li><code>===</code>: <strong>厳密等価</strong>（値も型も同じ） ※現代JSでは<strong>常にこれを使う！</strong></li>
+<li><code>!==</code>: <strong>厳密不等価</strong>（値または型が違う）</li>
+<li><code>></code> , <code><</code> , <code>>=</code> , <code><=</code>: 大小比較</li>
+</ul>
+<pre><code language="language-javascript" class="language-javascript">const age = 18;
+const isAdult = age &gt;= 18; // true
+</code></pre>
+<h2 is-upgraded><code>==</code> の罠：暗黙の型変換</h2>
+<p><code>==</code> (等価演算子) は、比較するときに自動で型を変換してしまいます。これが意図しないバグ（暗黙の型変換）を引き起こします。</p>
+<table>
+<tr><td colspan="1" rowspan="1"><p>比較</p>
+</td><td colspan="1" rowspan="1"><p>結果</p>
+</td><td colspan="1" rowspan="1"><p>理由</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><code>"100" == 100</code></p>
+</td><td colspan="1" rowspan="1"><p><code>true</code></p>
+</td><td colspan="1" rowspan="1"><p>文字列が数値に変換される</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><code>0 == false</code></p>
+</td><td colspan="1" rowspan="1"><p><code>true</code></p>
+</td><td colspan="1" rowspan="1"><p>0とfalseが同じ「偽」として扱われる</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><code>"" == 0</code></p>
+</td><td colspan="1" rowspan="1"><p><code>true</code></p>
+</td><td colspan="1" rowspan="1"><p>空文字と0が同じものとして扱われる</p>
+</td></tr>
+</table>
+<p><strong>「型」も含めて厳密にチェックする </strong></p>
+<p><strong><code>===</code></strong></p>
+<p><strong> を使えば、これらはすべて </strong></p>
+<p><strong><code>false</code></strong></p>
+<p><strong> になり、安全です。</strong> モダンな開発では、特別な理由がない限り <strong>100% </strong></p>
+<p><strong><code>===</code></strong></p>
+<p><strong> を使ってください。</strong></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="厳密等価演算子による比較 (練習問題)" duration="2">
+        <p>「入力されたID(<code>inputID</code>)」と「保存されているID(<code>savedID</code>)」が一致しているかを確認したいです。 型変換による予期せぬバグを防ぐため、<strong>厳密等価演算子</strong>を使って比較してください。</p>
+<pre><code language="language-javascript" class="language-javascript">const inputID = &#34;12345&#34;;
+const savedID = 12345;
+
+// 型変換をしてから、厳密に比較する
+if (Number(inputID) ____ savedID) {
+  console.log(&#34;認証成功&#34;);
+}
+
+// @test: Number(inputID) === savedID
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="厳密等価演算子による比較 (解説)" duration="2">
+        <pre><code language="language-javascript" class="language-javascript">if (Number(inputID) === savedID) {
+  console.log(&#34;認証成功&#34;);
+}
+</code></pre>
+<p><code>==</code> ではなく <code>===</code> を使う癖をつけましょう。比較する前には、<code>Number()</code> などで型を揃えるのがベストプラクティスです。</p>
+<h2 is-upgraded>6-4. 論理演算子 (Logical Operators)</h2>
+<p>複数の条件を組み合わせる魔法の記号です。</p>
+<h2 is-upgraded>AND演算 (<code>&&</code>)：かつ</h2>
+<p>すべての条件が <code>true</code> のときだけ <code>true</code> になります。</p>
+<pre><code language="language-javascript" class="language-javascript">// 「在庫があり」 かつ 「お金が足りている」
+const canBuy = hasStock &amp;&amp; hasMoney;
+</code></pre>
+<p><strong>ショートサーキット</strong>: JSは左から順に判定します。もし左側が <code>false</code> なら、右側は見ることなく即座に <code>false</code> と確定します。</p>
+<h2 is-upgraded>OR演算 (<code>||</code>)：または</h2>
+<p>どちらか片方でも <code>true</code> なら <code>true</code> になります。</p>
+<pre><code language="language-javascript" class="language-javascript">// 「会員」 または 「招待券を持っている」
+const canEnter = isMember || hasTicket;
+</code></pre>
+<p><strong>ショートサーキット</strong>: 左側が <code>true</code> なら、右側を見るまでもなく <code>true</code> と確定します。</p>
+<h2 is-upgraded>NOT演算 (<code>!</code>)：否定</h2>
+<p><code>true</code> を <code>false</code> に、<code>false</code> を <code>true</code> に反転させます。</p>
+<pre><code language="language-javascript" class="language-javascript">// 準備完了して「いない」 (!true -&gt; false)
+const isNotReady = !isReady;
+</code></pre>
+<h3 is-upgraded>テクニック：<code>!!</code> (二連否定)</h3>
+<p>値を明示的に <code>boolean</code> 型に変換したいときによく使われます。 <code>const isExist = !!user; // userがいればtrue, なければfalse</code></p>
+<h2 is-upgraded>6-5. null と undefined の違い</h2>
+<p class="image-container"><img alt="h:350 0-null-undefined" src="img/689da354f12b802c.JPG"></p>
+<h2 is-upgraded>undefined（未定義）</h2>
+<p><strong>「中身がまだ決まっていない」という、システム側の都合で発生する「ない」。</strong></p>
+<ul>
+<li>変数を作った直後の初期状態</li>
+<li>存在しないデータにアクセスした時</li>
+<li><strong>「意図せず」空っぽになってしまっている状態</strong></li>
+</ul>
+<p><strong>🚨 注意</strong>: 開発者が自ら <code>user = undefined</code> と代入するのは、システム本来の挙動と区別がつかなくなるため <strong>アンチパターン（やってはいけないこと）</strong> とされています。</p>
+<h2 is-upgraded>null（無）</h2>
+<p><strong>「ここには値がない」と、開発者が意図的に設定した「ない」。</strong></p>
+<ul>
+<li>検索したけど「対象が見つからなかった」という明示的な結果</li>
+<li>以前あった値をあえて「空」にする時</li>
+<li><strong>「意図して」空っぽにしている状態</strong></li>
+</ul>
+<p><strong>使い分けの極意</strong>: 「システムが勝手に用意する &#34;ない&#34;」が <code>undefined</code>。「人間が明示的にセットする &#34;ない&#34;」が <code>null</code> です。</p>
+<h3 is-upgraded>「ない」の4様 (undefined / null / 0 / &#34;&#34;)</h3>
+<p>これらはすべて「ない」に関連しますが、意味も型も全く別物です。</p>
+<table>
+<tr><td colspan="1" rowspan="1"><p>特徴</p>
+</td><td colspan="1" rowspan="1"><p><code>undefined</code></p>
+</td><td colspan="1" rowspan="1"><p><code>null</code></p>
+</td><td colspan="1" rowspan="1"><p><code>0</code></p>
+</td><td colspan="1" rowspan="1"><p><code>""</code></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>意味</strong></p>
+</td><td colspan="1" rowspan="1"><p>システム的な「未定義」</p>
+</td><td colspan="1" rowspan="1"><p>意図的な「空 / 無」</p>
+</td><td colspan="1" rowspan="1"><p>数値としての「ゼロ」</p>
+</td><td colspan="1" rowspan="1"><p>長さ0の文字列</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>型</strong></p>
+</td><td colspan="1" rowspan="1"><p><code>undefined</code>型</p>
+</td><td colspan="1" rowspan="1"><p><code>object</code>型</p>
+</td><td colspan="1" rowspan="1"><p><code>number</code>型</p>
+</td><td colspan="1" rowspan="1"><p><code>string</code>型</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>財布の例え</strong></p>
+</td><td colspan="1" rowspan="1"><p>財布を買う前（存在不明）</p>
+</td><td colspan="1" rowspan="1"><p>財布を家に置いた（無）</p>
+</td><td colspan="1" rowspan="1"><p>財布の中身が0円（数値）</p>
+</td><td colspan="1" rowspan="1"><p>中身のない名札（テキスト）</p>
+</td></tr>
+</table>
+<p><strong>Warning</strong>:</p>
+<ul>
+<li><code>0</code> や <code>""</code> は「有効な値」ですが、<code>null</code> や <code>undefined</code> は「値そのものがない」状態です。</li>
+<li>プログラムで「入力されたか？」を判定する際、これらを混同すると不具合の原因になります。</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="初期値の設定 (null vs undefined) (練習問題)" duration="2">
+        <p>APIからデータを取得する前の「初期状態」として、変数 <code>userProfile</code> を定義します。 「まだデータがない」ことを明示するために、エンジニアが主導権を持って使うべき値はどちらですか？</p>
+<pre><code language="language-javascript" class="language-javascript">// まだ取得していないので、意図的に空にする
+let userProfile = ____;
+
+console.log(userProfile);
+
+// @test: userProfile === null
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="初期値の設定 (null vs undefined) (解説)" duration="2">
+        <pre><code language="language-javascript" class="language-javascript">let userProfile = null;
+</code></pre>
+<ul>
+<li><strong><code>null</code></strong>: 「空である」ことを明示的にセットする値。</li>
+<li><strong><code>undefined</code></strong>: 「未定義」を表す値（初期化忘れなどでシステムが勝手に入れることが多い）。</li>
+</ul>
+<p>「データ待ち」の状態は意図的なものなので、<code>null</code> を使うのが一般的です。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="コメント (Comments)" duration="2">
+        <p>コードは「コンピュータへの命令」ですが、同時に <strong>「人間への手紙」</strong> でもあります。 コメント機能を使って、コードの意図を残しましょう。</p>
+<pre><code language="language-javascript" class="language-javascript">// 1行コメント: この行の説明を書きます。
+
+/*
+  複数行コメント:
+  長い説明や、
+  一時的にコードを無効化したい時に使います。
+*/
+
+const tax = 0.1; // 消費税率（2026年現在）
+</code></pre>
+<p><strong>Tip</strong>: 「何をしているか」はコードを見ればわかります。 <strong>「なぜそうしたのか（Why）」</strong> をコメントに残すと、未来の自分が助かります。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="コンソールでのデバッグ" duration="2">
+        <p><code>console.log</code> 以外にも便利な機能があります。</p>
+<pre><code language="language-javascript" class="language-javascript">// 通常のログ
+console.log(&#34;処理を開始します&#34;);
+
+// 警告 (黄色く表示されることが多い)
+console.warn(&#34;バッテリー残量が低下しています&#34;);
+
+// エラー (赤く表示され、スタックトレースが出る)
+console.error(&#34;通信に失敗しました！&#34;);
+</code></pre>
+<p>エラーが出た時は、この <code>console.error</code> の内容をGoogleで検索するのが解決の近道です。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Section 01 まとめ" duration="2">
+        <p>エンジニアリングの基礎となる概念を幅広くカバーしました。</p>
+<ol type="1">
+<li><strong>Architecture</strong>: FE/BE/API の3層構造でアプリは動く。</li>
+<li><strong>Safety</strong>: TypeScript と <code>const</code> で堅牢なコードを書く。</li>
+<li><strong>Clarity</strong>: 命名規則、コメント、テンプレートリテラル ( <code>${}</code> ) で**「読みやすいコード」**を目指す。</li>
+<li><strong>Logic</strong>: <code>boolean</code> と論理演算子 (<code>&&</code>, <code>||</code>) を使いこなして条件を操る。</li>
+</ol>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Next Steps" duration="2">
+        <p>次回は、いよいよプログラミングの醍醐味である <strong>「ロジック（論理）」</strong> に触れます。</p>
+<ul>
+<li><strong>Arrow Functions (アロー関数)</strong>: 処理の手順をまとめる「部品化」の技術。</li>
+<li><strong>Arrays (配列)</strong>: 複数のデータをリストとして扱う方法。</li>
+<li><strong>Control Flow (条件分岐)</strong>: 「もし〜なら」でアプリに知能を与える。</li>
+</ul>
+<p>今日の「箱」と「型」の知識があれば、必ず理解できます。 お疲れ様でした！</p>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/claat-public/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/prettify.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+
+  <script src="playground.js"></script>
+</body>
+</html>

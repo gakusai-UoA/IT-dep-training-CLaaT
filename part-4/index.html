@@ -1,0 +1,764 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Part 4 Training</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+
+  <link rel="stylesheet" href="playground.css">
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14" ga4id=""></google-codelab-analytics>
+  <google-codelab codelab-gaid=""
+                  codelab-ga4id=""
+                  id="part-4"
+                  title="Part 4 Training"
+                  environment="web"
+                  feedback-link="https://github.com/gakusai-UoA/sosho-2026">
+    
+      <google-codelab-step label="復習：JSプログラミングにおける「型」とは？" duration="2">
+        <h2 is-upgraded>データの「種類」を定義するルール</h2>
+<p>これまで変数や定数を学んできましたが、プログラムが扱うすべてのデータには「型（Type）」というデータの種類が決まっています。</p>
+<ul>
+<li><strong><code>string</code></strong><strong> (文字列)</strong>: 名前やメッセージなど (<code>"Shake"</code>)</li>
+<li><strong><code>number</code></strong><strong> (数値)</strong>: 金額やカウントなど (<code>123</code>, <code>0.5</code>)</li>
+<li><strong><code>boolean</code></strong><strong> (真偽値)</strong>: はい/いいえの状態 (<code>true</code>, <code>false</code>)</li>
+<li><strong><code>Array / Object</code></strong>: 複数のデータをまとめたもの</li>
+</ul>
+<p><strong>「型」が必要な理由</strong>: 「名前（文字列）に 10 を足す」といった、人間から見たら明らかに <strong>「意味の通らない操作」</strong> を、コンピュータが事前（実行前）に見つけるための手がかりになります。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="なぜ TypeScript を使うのか？" duration="2">
+        <h2 is-upgraded>型がない世界のリスク</h2>
+<p>JavaScript は非常に自由ですが、その自由さがバグの原因になります。</p>
+<ul>
+<li><strong>実行するまでエラーがわからない</strong>: 関数に文字列を渡すべきところに数値を渡しても、動かしてみるまで気づけません。</li>
+<li><strong>補完が効かない</strong>: オブジェクトにどんなプロパティがあるか、記憶に頼るしかありません。</li>
+<li><strong>大規模開発での混乱</strong>: 他人が書いたコード（あるいは1ヶ月前の自分が書いたコード）の使い方がわからなくなることがあります。</li>
+</ul>
+<h2 is-upgraded>TypeScript がもたらす「安心感」</h2>
+<p>TypeScript は JavaScript に <strong>静的型付け</strong> を追加した言語です。</p>
+<ul>
+<li><strong>静的解析</strong>: コードを実行する前に、エディタがミスを「赤線」で指摘してくれます。</li>
+<li><strong>強力なオートコンプリート</strong>: オブジェクトが持つプロパティを推測して表示してくれます。</li>
+</ul>
+<h2 is-upgraded>JavaScript の罠：「気づけない」こと</h2>
+<pre><code language="language-javascript" class="language-javascript">function buy(price) {
+  return price * 1.1;
+}
+buy(&#34;1,000円&#34;); 
+</code></pre>
+<ul>
+<li>JavaScriptは優しいため、<strong>「1,000円」という文字列を渡してもエラーを出さずに無理やり計算</strong>しようとします。</li>
+<li>結果は <code>NaN</code>（計算不能）となり、アプリの表示がおかしくなります。</li>
+<li>最も恐ろしいのは、<strong>「ブラウザで実行して画面を見るまでバグに気づけない」</strong> 点です。</li>
+</ul>
+<h2 is-upgraded>TypeScript の安心感：「書いている時に気づく」</h2>
+<pre><code language="language-typescript" class="language-typescript">function safeBuy(price: number) {
+  return price * 1.1;
+}
+safeBuy(&#34;1,000円&#34;);
+//      ^^^^^^^^^
+// Argument of type &#39;string&#39; is not assignable to parameter of type &#39;number&#39;.
+</code></pre>
+<ul>
+<li>引数に <code>price: number</code> と <strong>型（データの種類）</strong> を指定しました。</li>
+<li>すると、「1,000円」を渡そうとした<strong>その瞬間に、VS Code上で赤線（エラー）が出ます</strong>。</li>
+<li>これが TypeScript の最大のメリットです。<strong>「実行する前」にバグを未然に防ぐ</strong>ことができます。</li>
+</ul>
+<h2 is-upgraded>なぜこれが「一番重要」なのか？</h2>
+<ul>
+<li><strong>開発スピードの向上</strong>: バグを探す時間が大幅に減ります。エディタが常に横で「間違ってるよ！」と教えてくれるからです。</li>
+<li><strong>心理的安全性</strong>: 「ここを変更したら、別の画面が壊れるかも...」という恐怖から解放されます。</li>
+<li><strong>未来の自分へのメッセージ</strong>: 型を書いておくことで、1ヶ月後の自分が読んでも**「この関数には何を入れるべきか」が一目で分かります**。</li>
+</ul>
+<h2 is-upgraded>強力な補完（オートコンプリート）</h2>
+<pre><code language="language-typescript" class="language-typescript">const user = { name: &#34;Shake&#34;, age: 20 };
+
+// 下の行のコメントを外して、「user.」の後にタイピングしてみてください
+// console.log(user.name);
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="基本的な型定義" duration="2">
+        <h2 is-upgraded>変数と関数の型アノテーション (1/2)</h2>
+<p><strong>型アノテーション（Type Annotation）</strong> とは、変数名や関数の引数の後ろに <code>: 型名</code> を添えて、データの種類を明示的に指定することです。 TypeScript はこの情報をもとに、正しいデータが扱われているかをチェックします。</p>
+<pre><code language="language-typescript" class="language-typescript">// 変数に型をつける
+const userName: string = &#34;Shake&#34;;
+const age: number = 20;
+const isStaff: boolean = true;
+
+// 関数の引数と戻り値に型をつける
+function add(a: number, b: number): number {
+  return a + b;
+}
+</code></pre>
+<h2 is-upgraded>変数と関数の型アノテーション (2/2)</h2>
+<pre><code language="language-typescript" class="language-typescript">// アロー関数の場合
+const greet = (name: string): string =&gt; {
+  return `Hello, ${name}`;
+};
+
+console.log(greet(&#34;Shake&#34;)); // &#34;Hello, Shake&#34;
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="型推論と型注釈 (練習問題)" duration="2">
+        <p>TypeScriptでは変数の型を推論してくれますが、明示的に書くこともできます。 変数 <code>count</code> に「数値型」を明示的に指定するには、変数名の後ろに何と書けばよいですか？</p>
+<pre><code language="language-typescript" class="language-typescript">// 数値型を明示する
+const count____ = 10;
+
+console.log(count);
+
+// @test: typeof count !== &#39;undefined&#39; &amp;&amp; count === 10
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="型推論と型注釈 (解説)" duration="2">
+        <pre><code language="language-typescript" class="language-typescript">const count: number = 10;
+</code></pre>
+<p><code>: number</code> をつけることで、この変数は数値しか入れられないことを保証します。 （<code>const</code> なので再代入はできませんが、型としての意味は重要です）</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="TypeScriptの基本 (練習問題)" duration="2">
+        <p>次の JavaScript コードを TypeScript に書き換えて、引数と戻り値に型をつけてください。</p>
+<pre><code language="language-typescript" class="language-typescript">function getLength(text) {
+  return text.length;
+}
+
+console.log(getLength(&#34;hello&#34;));
+
+// @test: typeof getLength(&#34;hello&#34;) === &#34;number&#34;
+// @test: getLength(&#34;hello&#34;) === 5
+// @test: getLength(&#34;&#34;) === 0
+</code></pre>
+<ul>
+<li>ヒント : length プロパティは文字列の長さを表すプロパティです。</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="解説 (解説)" duration="2">
+        <pre><code language="language-typescript" class="language-typescript">function getLength(text: string): number {
+  return text.length;
+}
+</code></pre>
+<ul>
+<li>文字列を受け取って、その長さを数値で返すので <code>string</code> 型と <code>number</code> 型を指定します。</li>
+</ul>
+<h2 is-upgraded>any 型：すべてを許容する「禁じ手」</h2>
+<p><code>any</code> 型を指定すると、その変数に対する <strong>TypeScript の型チェックがすべて無効化されます。</strong></p>
+<ul>
+<li><strong>何でもできる</strong>: 文字列を入れても数値を入れても怒られません。存在しないメソッドを呼び出してもエラーになりません。</li>
+<li><strong>最大のリスク</strong>: TypeScript を使うメリット（エラーの事前検知、補完）がすべて失われます。「書いている時はエラーがないのに、実行するとクラッシュする」という最悪の状態を招きます。</li>
+<li><strong>合言葉</strong>: <strong>「</strong><strong><code>any</code></strong><strong> は禁止」</strong>。どうしても型がわからない時の一時的な避難場所以外では使いません。</li>
+</ul>
+<pre><code language="language-typescript" class="language-typescript">let value: any = &#34;Shake&#34;;
+
+value = 123; // OK (型のエラーが出ない)
+value.push(); // OK (?) ... 実際には数値に push はないので実行時にエラーになる！
+
+</code></pre>
+<h2 is-upgraded>代替案：より安全な unknown 型</h2>
+<p>どうしても型が分からない場合、現代のTypeScriptでは <code>any</code> ではなく <strong><code>unknown</code></strong> 型を使うのがベストプラクティスです。</p>
+<ul>
+<li><strong><code>unknown</code></strong><strong> の特徴</strong>: 「何が入っているか分からない」という事実は同じですが、<strong>「中身を特定（型の絞り込み）するまでは、勝手な操作を許さない」</strong> という安全装置が働きます。</li>
+<li><strong>実務での扱い</strong>: APIから取得した得体の知れないデータなどは、まず <code>unknown</code> で受け取り、後述するバリデーション（zodなど）を通して安全な型に変換してから使います。</li>
+</ul>
+<pre><code language="language-typescript" class="language-typescript">let safeValue: unknown = &#34;Shake&#34;;
+
+// safeValue.push(); // エラー！「よくわからないものに push はできません」と怒ってくれる
+
+if (typeof safeValue === &#34;string&#34;) {
+  // ここからは string として扱える（型の絞り込み）
+  console.log(safeValue.length);
+}
+</code></pre>
+<h2 is-upgraded>エラーを強制的に黙らせるコメント</h2>
+<p>どうしても型エラーが解決できない、あるいはライブラリ側の型定義が間違っている場合に、<strong>コンパイルエラーを無理やり消す</strong>コメントがあります。</p>
+<ul>
+<li><strong><code>// @ts-ignore</code></strong><strong> (非推奨)</strong>: 次の行で発生する型エラーを<strong>無条件で無視</strong>します。 <ul>
+<li><strong>リスク</strong>: コードを修正してエラーが消えた後も「無視し続ける」ため、将来その行に<strong>別の本当のバグ</strong>が混入しても気づけなくなります。</li>
+</ul>
+</li>
+<li><strong><code>// @ts-expect-error</code></strong><strong> (推奨)</strong>: 次の行で「エラーが出るはずだ」と宣言して黙らせます。 <ul>
+<li><strong>メリット</strong>: もしコードが修正され、エラーが出なくなった場合、<strong>「エラーが出るはずなのに出ていないぞ」と TypeScript が逆にエラーを出してくれます。</strong> 不要になったコメントを消し忘れることがありません。</li>
+</ul>
+</li>
+</ul>
+<pre><code language="language-typescript" class="language-typescript">// @ts-ignore
+const danger: number = &#34;無視&#34;; // エラーは消えるが、中身は文字列で危険
+
+// @ts-expect-error
+const better: number = &#34;期待通り&#34;; // エラーが解消されたら、このコメント自体がエラーになる
+</code></pre>
+<p><strong>結論</strong>: どちらも「禁じ手」ですが、どうしても使うなら <strong><code>@ts-expect-error</code></strong> を選びましょう。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="型定義と any (練習問題)" duration="2">
+        <p>以下のコードで、TypeScript がエラー（赤線）を出すのはどの行でしょうか？</p>
+<pre><code language="language-typescript" class="language-typescript">let price: any = 1000;
+price = &#34;無料&#34;;
+
+function update(p: number) {
+  console.log(p);
+}
+
+update(price); // (A)
+update(&#34;0&#34;); // (B)
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="解説 (解説)" duration="2">
+        <p><strong>答え：(B)</strong></p>
+<ul>
+<li><code>price</code> は <code>any</code> 型なので、(A) のように「数値が必要な関数」に渡してもエラーになりません（これが any の危険なところです）。</li>
+<li>(B) は「文字列」を直接「数値型」の引数に渡しているため、明確に型エラーになります。</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="オブジェクトの型定義：Interface と Type" duration="2">
+        <h2 is-upgraded>Interface (インターフェース)</h2>
+<p>オブジェクト（複数のデータがまとまったもの）が、<strong>「どのようなプロパティを持ち、それぞれの値が何型か」という「設計図（形）」</strong> を定義します。</p>
+<ul>
+<li><strong>一貫性の保証</strong>: 同じインターフェースを使うことで、複数の箇所で同じ形状のデータを扱うことが保証されます。</li>
+<li><strong>過不足のチェック</strong>: 定義したプロパティが足りなかったり、余計なプロパティが入っているとエラーになります。</li>
+<li><strong>読みやすさ</strong>: 何でも入る <code>Object</code> 型ではなく、具体的で名前のついた型（例: <code>User</code>）として扱えます。</li>
+</ul>
+<h2 is-upgraded>Interfaceの例 (1/2)</h2>
+<pre><code language="language-typescript" class="language-typescript">interface User {
+  id: string;
+  name: string;
+  email: string;
+  // プロパティ名の後ろに ? をつけると「あってもなくても良い（任意）」になります
+  age?: number;
+}
+
+// OK: 全ての必須項目が揃っている
+const staff: User = {
+  id: &#34;st-01&#34;,
+  name: &#34;Taro&#34;,
+  email: &#34;taro@example.com&#34;,
+};
+
+</code></pre>
+<h2 is-upgraded>Interfaceの例 (2/2)</h2>
+<pre><code language="language-typescript" class="language-typescript">// NG: name が欠けているためエラーになる
+const visitor: User = {
+  id: &#34;v-02&#34;,
+  email: &#34;visitor@example.com&#34;,
+};
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="実行委員スタッフの管理 (練習問題)" duration="2">
+        <p>以下の条件を満たす <code>Staff</code> 型を <code>interface</code> で定義し、変数を作成してください。</p>
+<ol type="1">
+<li><code>id</code>: 数値 (必須)</li>
+<li><code>name</code>: 文字列 (必須)</li>
+<li><code>email</code>: 文字列 (必須)</li>
+<li><code>phoneNumber</code>: 文字列 (あってもなくても良い)</li>
+<li><code>isLeader</code>: 真偽値 (必須)</li>
+</ol>
+<pre><code language="language-typescript" class="language-typescript">// ここに Staff インターフェースと変数 staff を定義してください
+
+console.log(staff);
+
+// @test: (function() { const testStaff: Staff = { id: 1, name: &#34;A&#34;, email: &#34;B&#34;, isLeader: true }; return testStaff.id === 1; })()
+// @test: typeof staff === &#39;object&#39; &amp;&amp; typeof staff.id === &#39;number&#39; &amp;&amp; typeof staff.name === &#39;string&#39; &amp;&amp; typeof staff.email === &#39;string&#39; &amp;&amp; typeof staff.isLeader === &#39;boolean&#39;
+</code></pre>
+<h2 is-upgraded>練習問題: 実行委員スタッフの管理 (ヒント)</h2>
+<ul>
+<li>プロパティ名の後ろに <code>?</code> をつけると、その項目は省略可能（あってもなくても良い）になります。</li>
+<li>真偽値は <code>boolean</code> 型を使います。</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="実行委員スタッフの管理 (解説)" duration="2">
+        <pre><code language="language-typescript" class="language-typescript">interface Staff {
+  id: number;
+  name: string;
+  email: string;
+  phoneNumber?: string; // Optional
+  isLeader: boolean;
+}
+
+const staff: Staff = {
+  id: 101,
+  name: &#34;Shake&#34;,
+  email: &#34;shake@example.com&#34;,
+  isLeader: true,
+  // phoneNumber はなくてもOK
+};
+</code></pre>
+<h2 is-upgraded>Interface の継承 (<code>extends</code>)</h2>
+<p>既存のインターフェースをベースに、新しい項目を追加した「拡張版」の型を作ることができます。</p>
+<ul>
+<li><strong>再利用性</strong>: 共通の項目（<code>id</code>, <code>name</code> 等）を何度も書く必要がなくなります（DRY原則）。</li>
+<li><strong>階層構造</strong>: 「ユーザー」という基本型があり、それを拡張した「実行委員ユーザー」といった関係性を表現できます。</li>
+</ul>
+<h2 is-upgraded>Interface の継承 (1/2)</h2>
+<pre><code language="language-typescript" class="language-typescript">// 基本となる型
+interface User {
+  id: string;
+  name: string;
+}
+
+// User の中身を全て引き継ぎ、さらに department を追加
+interface StaffUser extends User {
+  department: string;
+  role: &#34;admin&#34; | &#34;member&#34;;
+}
+
+</code></pre>
+<h2 is-upgraded>Interface の継承 (2/2)</h2>
+<pre><code language="language-typescript" class="language-typescript">interface User {
+  id: string;
+  name: string;
+}
+
+interface StaffUser extends User {
+  department: string;
+  role: &#34;admin&#34; | &#34;member&#34;;
+}
+
+const myProfile: StaffUser = {
+  id: &#34;st-77&#34;,
+  name: &#34;Shake&#34;,
+  department: &#34;IT部&#34;,
+  role: &#34;admin&#34;,
+};
+
+console.log(myProfile);
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="オプショナルなプロパティ (練習問題)" duration="2">
+        <p>オブジェクトのプロパティで、**あってもなくても良い（任意）**なものを定義したいです。 プロパティ名の後ろに付ける記号は何ですか？</p>
+<pre><code language="language-typescript" class="language-typescript">interface User {
+  id: number;
+  name: string;
+  // bio (自己紹介) は任意にしたい
+  bio____: string;
+}
+
+const user: User = { id: 1, name: &#34;Shake&#34; };
+console.log(user);
+
+// @test: (function() { const u: User = { id: 1, name: &#34;A&#34; }; return u.bio === undefined; })()
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="オプショナルなプロパティ (解説)" duration="2">
+        <pre><code language="language-typescript" class="language-typescript">interface User {
+  id: number;
+  name: string;
+  bio?: string;
+}
+</code></pre>
+<p><strong><code>?</code></strong> をプロパティ名の後ろに付けると、そのプロパティは「省略可能」になります。</p>
+<h2 is-upgraded>Type Alias (型別名) (1/2)</h2>
+<p>既存の型や、複数の型を組み合わせたものに <strong>「独自の名前（別名）」</strong> をつけることができます。</p>
+<ul>
+<li><strong>あだ名をつける</strong>: 複雑で長い型に短い名前をつけて、コードの意図を明確にします。</li>
+<li><strong>組み合わせの定義</strong>: 「A または B」といった柔軟な型の組み合わせが得意です。</li>
+<li><strong>用途</strong>: オブジェクトだけでなく、特定の「決まった値のリスト」を作る際によく使われます。</li>
+</ul>
+<pre><code language="language-typescript" class="language-typescript">// 1. Union Types（共用体型）： 複数の型の「どちらか」
+type ID = string | number;
+
+// 2. Literal Types（リテラル型）： 特定の「値」そのものを型にする
+// 「この3つの文字列以外は認めない」という強力な制約をかけられます
+type Status = &#34;pending&#34; | &#34;active&#34; | &#34;closed&#34;;
+
+</code></pre>
+<h2 is-upgraded>Type Alias (型別名) (2/2)</h2>
+<pre><code language="language-typescript" class="language-typescript">type ID = string | number;
+type Status = &#34;pending&#34; | &#34;active&#34; | &#34;closed&#34;;
+
+const userId: ID = &#34;u123&#34;; // OK
+const currentStatus: Status = &#34;active&#34;; // OK
+
+// NG! 定義にない文字列を入れようとするとエラーになる (アンコメントすると型エラーを確認できます)
+// const invalidStatus: Status = &#34;done&#34;;
+
+console.log({ userId, currentStatus });
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Union型 (共用体型) (練習問題)" duration="2">
+        <p>変数が「文字列」または「数値」の<strong>どちらか</strong>の値を取りうる場合、どのように定義しますか？ パイプ記号 <code>|</code> を使って書いてください。</p>
+<pre><code language="language-typescript" class="language-typescript">// IDは文字列も数値も許容したい
+type ID = string ____ number;
+
+const id1: ID = &#34;123&#34;;
+const id2: ID = 123;
+console.log(id1, id2);
+
+// @test: (function() { const a: ID = &#34;123&#34;; const b: ID = 123; return true; })()
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Union型 (共用体型) (解説)" duration="2">
+        <pre><code language="language-typescript" class="language-typescript">type ID = string | number;
+</code></pre>
+<p><code>|</code> (パイプ) を使うと「A または B」という型（Union型）を定義できます。 これを <strong>Union Types</strong> と呼びます。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="イベント予約システム (練習問題)" duration="2">
+        <p>「共通の基本データ」と「特定の役割独自のデータ」を継承で表現してください。</p>
+<ol type="1">
+<li><strong>基本型 </strong><strong><code>EventItem</code></strong>: <code>id</code>(文字列), <code>title</code>(文字列) を持つ。</li>
+<li><strong>拡張型 </strong><strong><code>StagePerformance</code></strong>: <code>EventItem</code> を継承し、以下の項目を追加。 <ul>
+<li><code>startTime</code>: 文字列</li>
+<li><code>status</code>: &#34;waiting&#34; / &#34;performing&#34; / &#34;finished&#34; のいずれか</li>
+</ul>
+</li>
+<li><strong>変数作成</strong>: 作成した型を使って、現在の状態が &#34;performing&#34; のデータを作成してください。（変数名は <code>opening</code> としてください）</li>
+</ol>
+<pre><code language="language-typescript" class="language-typescript">// ここに型定義と変数 opening を記述してください
+
+console.log(opening);
+
+// @test: (function() { const item: StagePerformance = { id: &#34;1&#34;, title: &#34;A&#34;, startTime: &#34;B&#34;, status: &#34;performing&#34; }; return item.status === &#34;performing&#34;; })()
+// @test: typeof opening === &#39;object&#39; &amp;&amp; opening.status === &#39;performing&#39; &amp;&amp; typeof opening.startTime === &#39;string&#39;
+</code></pre>
+<h2 is-upgraded>練習問題: イベント予約システム (ヒント)</h2>
+<ul>
+<li>継承には <code>extends</code> を使います。</li>
+<li><code>status</code> のように決まった選択肢は <strong>Literal Types</strong>（文字列を <code>|</code> で繋ぐ）を Type Alias または直接指定して定義します。</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="イベント予約システム (1/2) (解説)" duration="2">
+        <pre><code language="language-typescript" class="language-typescript">interface EventItem {
+  id: string;
+  title: string;
+}
+
+// Literal Types を使った状態定義
+type PerformanceStatus = &#34;waiting&#34; | &#34;performing&#34; | &#34;finished&#34;;
+
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="イベント予約システム (2/2) (解説)" duration="2">
+        <pre><code language="language-typescript" class="language-typescript">interface EventItem {
+  id: string;
+  title: string;
+}
+
+type PerformanceStatus = &#34;waiting&#34; | &#34;performing&#34; | &#34;finished&#34;;
+
+interface StagePerformance extends EventItem {
+  startTime: string;
+  status: PerformanceStatus;
+}
+
+const opening: StagePerformance = {
+  id: &#34;stg-01&#34;,
+  title: &#34;オープニングセレモニー&#34;,
+  startTime: &#34;10:00&#34;,
+  status: &#34;performing&#34;,
+};
+
+console.log(opening);
+</code></pre>
+<h2 is-upgraded>Interface と Type Alias の使い分け (1/2)</h2>
+<p>どちらも「型」を作るために使われますが、得意分野が異なります。</p>
+<h3 is-upgraded><strong>Interface は「拡張可能な設計図」</strong></h3>
+<ul>
+<li><strong>継承が得意</strong>: 既存の型をベースに一部を追加した新しい型を作るのが得意です。</li>
+<li><strong>オブジェクト専用</strong>: インターフェースは「オブジェクトの形」を定義するための専用機能です。</li>
+<li><strong>推奨</strong>: ユーザー、記事、ブース情報など、<strong>「独立したモノ（実体）」</strong> を定義するときに使います。</li>
+</ul>
+<h2 is-upgraded>Interface と Type Alias の使い分け (2/2)</h2>
+<h3 is-upgraded><strong>Type Alias は「柔軟なあだ名」</strong></h3>
+<ul>
+<li><strong>組み合わせが得意</strong>: <code>string | number</code> のように、複数の型を合体させたものは Type Alias でしか名前をつけられません。</li>
+<li><strong>リテラル型の定義</strong>: <code>"pending" | "active"</code> のような「特定の選択肢のセット」を定義するのに最適です。</li>
+<li><strong>推奨</strong>: ステータス、IDの種類、設定値など、<strong>「値のパターン」</strong> を定義するときに使います。</li>
+</ul>
+<p><strong>結論</strong>: 最初は「オブジェクトなら <strong>Interface</strong>、それ以外（選択肢/複雑な合体）なら <strong>Type Alias</strong>」と使い分ければOK。</p>
+<p><strong>昨今の実務トレンド</strong>: React コミュニティなどを中心に、意図しない型のマージ（同名 Interface の自動結合）を防ぐなどの理由から <strong>「プロジェクト内の型定義はすべて </strong></p>
+<p><strong><code>Type Alias</code></strong></p>
+<p><strong> (type) で統一する」</strong> という現場も増えています。 本研修では歴史的経緯を踏まえて両方紹介しますが、<strong>「迷ったら </strong></p>
+<p><strong><code>type</code></strong></p>
+<p><strong> を使う」</strong> と割り切ってしまっても構いません。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Interface と Type (練習問題)" duration="2">
+        <p>次のコードの <code>( ? )</code> に入る適切なキーワードは何でしょうか？</p>
+<pre><code language="language-typescript" class="language-typescript">interface Animal {
+  name: string;
+}
+
+// ( ? ) の部分を extends に書き換えて、エラーを解消してください
+interface Dog ( ? ) Animal {
+  bark(): void;
+}
+
+// 以下は動作確認用です (エラーが解消されると実行できます)
+const dog: Dog = {
+  name: &#34;ポチ&#34;,
+  bark() {
+    console.log(&#34;ワンワン！&#34;);
+  }
+};
+console.log(`${dog.name}が吠えました:`);
+dog.bark();
+
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="解説 (解説)" duration="2">
+        <p><strong>答え：extends</strong></p>
+<ul>
+<li>Interface を拡張して新しい型を作るには <code>extends</code> キーワードを使います。</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="ジェネリクス (Generics)" duration="2">
+        <h2 is-upgraded>定義時に型を確定させない仕組み</h2>
+<p><strong>ジェネリクス（Generics）</strong> とは、型そのものを「引数」として扱い、定義段階では確定させずに<strong>使用時に中身の型を指定する</strong>仕組みです。</p>
+<h3 is-upgraded>1. なぜ必要なのか（非効率な例）</h3>
+<p>データの枠組みは同じなのに、中身の型が違うだけで似たような定義を何度も作らなければならない不都合を解消します。</p>
+<pre><code language="language-typescript" class="language-typescript">interface StringRes {
+  data: string;
+  status: number;
+}
+interface NumberRes {
+  data: number;
+  status: number;
+}
+// ... 型が増えるたびに新しい定義が必要になる (非効率)
+</code></pre>
+<h3 is-upgraded>2. ジェネリクスによる解決</h3>
+<p>変化する部分に <code>T</code> という <strong>「型引数（プレースホルダ）」</strong> を置き、<strong>「後で型が入る空欄」</strong> を作ります。</p>
+<ul>
+<li><strong>定義</strong>: <code>interface ApiResponse<T> { data: T; }</code> （T は型が入るための変数のようなもの）</li>
+<li><strong>置換</strong>: <code>ApiResponse<string></code> と使うと、定義内の <code>T</code> が一斉に <code>string</code> に置き換わります。</li>
+</ul>
+<pre><code language="language-typescript" class="language-typescript">interface User {
+  id: string;
+  name: string;
+  email: string;
+}
+
+// T という「型を受け取るための変数」を用意した定義
+interface ApiResponse&lt;T&gt; {
+  data: T;
+  status: number;
+}
+
+// 使用時に T の部分へ具体的な型（string）を流し込む
+const textRes: ApiResponse&lt;string&gt; = { data: &#34;success&#34;, status: 200 };
+
+// 使用時に T の部分へ別の型（User）を流し込む
+const userRes: ApiResponse&lt;User&gt; = {
+  data: { id: &#34;1&#34;, name: &#34;Alpha&#34;, email: &#34;a@example.com&#34; },
+  status: 200,
+};
+
+console.log(textRes);
+console.log(userRes);
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="ジェネリクス (練習問題)" duration="2">
+        <p>「どんな型でも入れられる箱」を定義したいですが、一度入れたらその型として扱いたいです。 型引数（Type Parameter）として一般的に使われるアルファベット1文字は何ですか？</p>
+<pre><code language="language-typescript" class="language-typescript">interface Box&lt;____&gt; {
+  contents: ____;
+}
+
+const box: Box&lt;string&gt; = { contents: &#34;hello&#34; };
+console.log(box.contents);
+
+// @test: (function() { const b: Box&lt;string&gt; = { contents: &#34;hello&#34; }; return b.contents === &#34;hello&#34;; })()
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="ジェネリクス (解説)" duration="2">
+        <pre><code language="language-typescript" class="language-typescript">interface Box&lt;T&gt; {
+  contents: T;
+}
+</code></pre>
+<p><strong><code>T</code></strong> (Type) が最もよく使われます。 使うときは <code>Box<string></code> のように具体的な型を指定します。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="ジェネリクス (練習問題)" duration="2">
+        <p>次の型定義を元に、数値(<code>number</code>)をデータとして持つ <code>Item</code> 型の変数を宣言してください。</p>
+<pre><code language="language-typescript" class="language-typescript">interface Item&lt;T&gt; {
+  id: string;
+  content: T;
+}
+
+// ここに変数 myItem を宣言してください
+
+console.log(myItem);
+
+// @test: typeof myItem === &#39;object&#39; &amp;&amp; typeof myItem.id === &#39;string&#39; &amp;&amp; typeof myItem.content === &#39;number&#39;
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="解説 (解説)" duration="2">
+        <pre><code language="language-typescript" class="language-typescript">const myItem: Item&lt;number&gt; = {
+  id: &#34;item-001&#34;,
+  content: 100,
+};
+</code></pre>
+<ul>
+<li><code><T></code> の部分に <code>number</code> を流し込むことで、<code>content</code> プロパティが数値型として確定します。</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="汎用的な API レスポンス (練習問題)" duration="2">
+        <p>「異なる種類のデータ」を包む共通のレスポンス型をジェネリクスで作成してください。</p>
+<ol type="1">
+<li><strong>ジェネリック型 </strong><strong><code>ApiResponse<T></code></strong>: 「<code>data</code>: T型」と「<code>status</code>: 数値」を持つ。</li>
+<li><strong>変数 1 (変数名 </strong><strong><code>textResponse</code></strong><strong>)</strong>: <code>ApiResponse<string></code> を使って、文字列データを返す変数を作成。</li>
+<li><strong>変数 2 (変数名 </strong><strong><code>userResponse</code></strong><strong>)</strong>: <code>ApiResponse<User></code> を使って、前述の <code>User</code> 型を返す変数を作成。</li>
+</ol>
+<pre><code language="language-typescript" class="language-typescript">interface User {
+  id: string;
+  name: string;
+  email: string;
+}
+
+// ここに ApiResponse&lt;T&gt; を定義し、変数 textResponse, userResponse を作成してください
+
+console.log(textResponse);
+console.log(userResponse);
+
+// @test: (function() { const r: ApiResponse&lt;boolean&gt; = { data: true, status: 200 }; return r.status === 200; })()
+// @test: typeof textResponse === &#39;object&#39; &amp;&amp; typeof textResponse.data === &#39;string&#39; &amp;&amp; typeof textResponse.status === &#39;number&#39;
+// @test: typeof userResponse === &#39;object&#39; &amp;&amp; typeof userResponse.data === &#39;object&#39; &amp;&amp; typeof userResponse.data.id === &#39;string&#39; &amp;&amp; typeof userResponse.status === &#39;number&#39;
+</code></pre>
+<h2 is-upgraded>練習問題: 汎用的な API レスポンス (ヒント)</h2>
+<ul>
+<li>インターフェース名の後ろに <code><T></code> をつけ、中身で <code>T</code> を型として使用します。</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="汎用的な API レスポンス (解説)" duration="2">
+        <pre><code language="language-typescript" class="language-typescript">interface User {
+  id: string;
+  name: string;
+  email: string;
+}
+
+interface ApiResponse&lt;T&gt; {
+  data: T;
+  status: number;
+}
+
+const textResponse: ApiResponse&lt;string&gt; = {
+  data: &#34;成功しました&#34;,
+  status: 200,
+};
+
+const userResponse: ApiResponse&lt;User&gt; = {
+  data: { id: &#34;1&#34;, name: &#34;Shake&#34;, email: &#34;shake@example.com&#34; },
+  status: 200,
+};
+
+console.log(textResponse);
+console.log(userResponse);
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="まとめ" duration="2">
+        <h2 is-upgraded>本セクションのまとめ</h2>
+<ul>
+<li><strong>TypeScript の本質</strong>: JavaScript の自由さに「型」という制約を加え、<strong>実行する前にミスを機械的に見つける</strong>ためのツール。</li>
+<li><strong>型アノテーション</strong>: <code>: string</code> のように型を明示することで、エディタの強力な補完と保護を受けられる。</li>
+<li><strong>Interface と継承</strong>: 「Objectの形」を定義し、<code>extends</code> で再利用・拡張することで共通化を促進する。</li>
+<li><strong>ジェネリクス</strong>: 型をパラメータ化（<code><T></code>）し、構造は同じだが中身が異なるデータ（API レスポンス等）を効率的かつ安全に定義する。</li>
+<li><strong>「型は仕様書」</strong>: 型を正しく定義することは、未来の自分やチームメンバーに「このデータはどう扱うべきか」を伝える最も正確なドキュメントになる。</li>
+</ul>
+<p><strong>次は、この型安全な環境が動作する舞台「Cloudflare」について学びます。</strong></p>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/claat-public/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/prettify.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+
+  <script src="playground.js"></script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#ccfbf1', 'primaryTextColor': '#134e4a', 'primaryBorderColor': '#14b8a6', 'lineColor': '#0f766e', 'secondaryColor': '#f0fdfa', 'tertiaryColor': '#ffffff' }}}%%
+graph LR
+    Req["HTTP Request"] --> Zod["Zod Middleware<br/>(関所)"]
+    Zod -->|"Invalid Data"| Err["400 Bad Request"]
+    Zod -->|"Valid Data"| Handler["Main Handler<br/>(本丸)"]
+    Handler --> DB[("Database")]
+    DB --> Res["HTTP Response"]

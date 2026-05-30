@@ -1,0 +1,374 @@
+/* playground.css */
+
+/* Light-themed Inline Playground Container */
+.playground-container {
+  margin: 1.5em 0;
+  border: 1px solid #dadce0;
+  border-radius: 8px;
+  overflow: hidden;
+  font-family: 'Roboto', 'Noto Sans JP', sans-serif;
+  background-color: #f8f9fa;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.playground-header {
+  background-color: #f1f3f4;
+  padding: 8px 16px;
+  border-bottom: 1px solid #dadce0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.playground-lang {
+  font-weight: 500;
+  color: #5f6368;
+  font-size: 0.85em;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.playground-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.playground-btn {
+  background-color: #fff;
+  border: 1px solid #dadce0;
+  color: #1a73e8;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85em;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.playground-btn:hover {
+  background-color: #f8f9fa;
+  border-color: #1a73e8;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.playground-btn.run-btn {
+  background-color: #1a73e8;
+  color: #fff;
+  border-color: #1a73e8;
+}
+
+.playground-btn.run-btn:hover {
+  background-color: #1557b0;
+  border-color: #1557b0;
+}
+
+/* Edit in Monaco button styled slightly differently to denote visual transition */
+.playground-btn.edit-btn {
+  color: #1a73e8;
+  border-color: #dadce0;
+}
+
+.playground-btn.edit-btn:hover {
+  background-color: #e8f0fe;
+  border-color: #1a73e8;
+}
+
+.playground-editor-wrapper {
+  position: relative;
+}
+
+.playground-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: none;
+  resize: vertical;
+  font-family: 'Menlo', 'Monaco', 'Consolas', monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  padding: 16px;
+  background-color: #2d3748;
+  color: #f7fafc;
+  outline: none;
+  min-height: 120px;
+  display: block;
+}
+
+.playground-textarea:focus {
+  background-color: #1a202c;
+}
+
+.playground-monaco-inline {
+  width: 100%;
+  box-sizing: border-box;
+  background-color: #1e1e1e;
+  border: none;
+  outline: none;
+}
+
+.playground-textarea.hidden {
+  display: none !important;
+}
+
+.playground-console {
+  background-color: #1a202c;
+  border-top: 1px solid #2d3748;
+  padding: 12px 16px;
+  font-family: 'Menlo', 'Monaco', 'Consolas', monospace;
+  font-size: 13px;
+  color: #a0aec0;
+  max-height: 200px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.playground-console-entry {
+  margin: 4px 0;
+}
+
+.playground-console-entry.log {
+  color: #e2e8f0;
+}
+
+.playground-console-entry.error {
+  color: #f56565;
+}
+
+.playground-console-entry.system {
+  color: #4fd1c5;
+  font-style: italic;
+}
+
+.playground-banner {
+  padding: 12px 16px;
+  font-weight: 500;
+  font-size: 0.9em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-top: 1px solid rgba(0,0,0,0.05);
+}
+
+.playground-banner.success {
+  background-color: #e6fffa;
+  color: #234e52;
+  border-left: 4px solid #319795;
+}
+
+.playground-banner.fail {
+  background-color: #fff5f5;
+  color: #742a2a;
+  border-left: 4px solid #e53e3e;
+}
+
+/* VS Code Style Drawer */
+.editor-drawer {
+  position: fixed;
+  top: 0;
+  right: -50%; /* Start offscreen */
+  width: 45%;
+  height: 100%;
+  background-color: #1e1e1e; /* VS Code dark background */
+  color: #d4d4d4;
+  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.4);
+  z-index: 9999;
+  transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  box-sizing: border-box;
+}
+
+.editor-drawer.open {
+  right: 0;
+}
+
+/* Drawer Header */
+.drawer-header {
+  background-color: #252526;
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #3c3c3c;
+  height: 48px;
+  box-sizing: border-box;
+}
+
+.drawer-title {
+  font-size: 0.9em;
+  font-weight: 600;
+  color: #e1e1e1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.drawer-close-btn {
+  background: none;
+  border: none;
+  color: #858585;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+}
+
+.drawer-close-btn:hover {
+  color: #fff;
+}
+
+/* Monaco Editor Container */
+.monaco-container-wrapper {
+  flex: 1;
+  position: relative;
+  background-color: #1e1e1e;
+  min-height: 200px;
+}
+
+#monaco-container {
+  width: 100%;
+  height: 100%;
+}
+
+.monaco-loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #858585;
+  font-size: 0.9em;
+}
+
+/* Action Footer */
+.drawer-actions {
+  background-color: #252526;
+  padding: 12px 16px;
+  border-top: 1px solid #3c3c3c;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+/* Drawer-specific buttons overrides to ensure dark theme */
+.editor-drawer .playground-btn {
+  background-color: #333;
+  border: 1px solid #555;
+  color: #ccc;
+  padding: 6px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85em;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.editor-drawer .playground-btn:hover {
+  background-color: #444;
+  color: #fff;
+  border-color: #777;
+}
+
+.editor-drawer .playground-btn.run-btn {
+  background-color: #0e639c; /* VS Code blue */
+  color: #fff;
+  border: 1px solid #1177bb;
+}
+
+.editor-drawer .playground-btn.run-btn:hover {
+  background-color: #1177bb;
+}
+
+/* Quiz feedback banner inside drawer */
+.drawer-banner {
+  padding: 10px 16px;
+  font-weight: 500;
+  font-size: 0.85em;
+  border-top: 1px solid #3c3c3c;
+  display: none;
+}
+
+.drawer-banner.success {
+  background-color: #1b3a24;
+  color: #a3e635;
+  border-left: 4px solid #a3e635;
+}
+
+.drawer-banner.fail {
+  background-color: #4c1d1d;
+  color: #fca5a5;
+  border-left: 4px solid #fca5a5;
+}
+
+/* Console panel in drawer */
+.drawer-console {
+  height: 180px;
+  background-color: #1e1e1e;
+  border-top: 1px solid #3c3c3c;
+  display: flex;
+  flex-direction: column;
+}
+
+.console-header {
+  background-color: #252526;
+  padding: 6px 16px;
+  font-size: 0.8em;
+  font-weight: 600;
+  color: #858585;
+  border-bottom: 1px solid #3c3c3c;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.console-body {
+  flex: 1;
+  padding: 12px 16px;
+  overflow-y: auto;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  background-color: #1e1e1e;
+}
+
+.console-entry {
+  margin: 2px 0;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.console-entry.log {
+  color: #e1e1e1;
+}
+
+.console-entry.error {
+  color: #f14c4c; /* VS Code error red */
+}
+
+.console-entry.system {
+  color: #35a7df; /* Info blue */
+}
+
+/* Backdrop when drawer is open */
+.drawer-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 9998;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.drawer-backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+}

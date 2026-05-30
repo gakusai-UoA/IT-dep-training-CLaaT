@@ -1,0 +1,15 @@
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#ccfbf1', 'primaryTextColor': '#134e4a', 'primaryBorderColor': '#14b8a6', 'lineColor': '#0f766e', 'secondaryColor': '#f0fdfa', 'tertiaryColor': '#ffffff' }}}%%
+graph TD
+    subgraph JavaScript
+        JS[JavaScript Code] --> Run[Execute]
+        Run --> Err[Runtime Error! 💥]
+    end
+
+    subgraph TypeScript
+        TS[TypeScript Code] --> TSC[TS Compiler]
+        TSC -->|Type Error 💥| Fix[Fix Code]
+        Fix --> TS
+        TSC -->|Success| OutJS[JavaScript Code]
+        OutJS --> RunTS[Execute]
+        RunTS --> Safe[Safe Execution ✅]
+    end

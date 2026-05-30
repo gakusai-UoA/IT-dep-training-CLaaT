@@ -1,0 +1,133 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Part 5 Training</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+
+  <link rel="stylesheet" href="playground.css">
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14" ga4id=""></google-codelab-analytics>
+  <google-codelab codelab-gaid=""
+                  codelab-ga4id=""
+                  id="part-5"
+                  title="Part 5 Training"
+                  environment="web"
+                  feedback-link="https://github.com/gakusai-UoA/sosho-2026">
+    
+      <google-codelab-step label="Cloudflare とは？" duration="2">
+        <p>Cloudflare は、もともとは <strong>CDN（コンテンツ配信ネットワーク）</strong> やセキュリティを提供する会社です。 世界中（日本にも多数）に何百ものサーバー拠点（エッジ）を持っており、<strong>ユーザーに一番近い場所からデータを返す</strong>ことで、Webサイトを爆速・安全にするサービスを提供しています。</p>
+<p>近年、ただのCDNにとどまらず、<strong>「サーバーそのものを世界中に配置して動かす」</strong> という画期的なプラットフォームに進化しました。IT部ではこの仕組みをフル活用します。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="IT部が使う2つの武器" duration="2">
+        <p>Cloudflareの環境の前に、私たちが何を使ってアプリを作るのかを紹介します。</p>
+<ul>
+<li><strong>React (りあくと)</strong>: <ul>
+<li>画面（UI）を作るためのフロントエンド技術。ボタンを押した時の動きや、データの表示など「ユーザーの目に見える部分」を組み立てます。</li>
+</ul>
+</li>
+<li><strong>Hono (ほのぉ)</strong>: <ul>
+<li>データを処理するためのバックエンド技術（Web APIフレームワーク）。「Cloudflare で動かすために生まれた」と言っても過言ではないほど、Cloudflare と相性抜群の軽量で超高速なツールです。</li>
+</ul>
+</li>
+</ul>
+<p>この2つで作ったものを、Cloudflareのどこに置くのかを見ていきましょう。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="アプリを動かす場所" duration="2">
+        <p>私たちこれから書くプログラムを、どこに置いて動かすのか？ Cloudflare では、主に以下の2つのサービスを使い分けます。</p>
+<h2 is-upgraded>Cloudflare Pages (フロントエンド)</h2>
+<ul>
+<li><strong>役割</strong>: React などの「画面（HTML / CSS / JS）」を配信するためのサービス。</li>
+<li><strong>特徴</strong>: <ul>
+<li>用意されたファイルをそのまま世界中のサーバーに置くだけ（静的ホスティング）。</li>
+<li>GitHub と連携するだけで、コードを更新すると自動的に最新の画面が全世界に配信（デプロイ）されます。</li>
+<li><strong>IT部では「フロントエンド（React）」の公開場所として使います。</strong></li>
+</ul>
+</li>
+</ul>
+<h2 is-upgraded>Cloudflare Workers (バックエンド)</h2>
+<ul>
+<li><strong>役割</strong>: データベースとやり取りしたり、複雑な計算をする「APIサーバー」を動かす場所。</li>
+<li><strong>特徴</strong>: <ul>
+<li>一般的な「東京に1台だけ巨大なサーバーを置く」という方式ではなく、<strong>世界中のCloudflareのサーバーで同時にプログラムが待ち構え</strong>、アクセスしてきた人のすぐそばで実行されます。</li>
+<li>非常に動作が軽く、一瞬で起動するのが特徴です。</li>
+<li><strong>IT部では「バックエンド（Hono）」の実行場所として使います。</strong></li>
+</ul>
+</li>
+</ul>
+<p><strong>💡 コラム：Pages と Workers の統合</strong> 現在の Cloudflare の動向として、「Pages の仕組みを Workers に統合していく」という大きな流れが進んでいます。将来的にはフロントもバックもすべて「Workers」という共通の基盤で管理されるようになりますが、研修では便宜上「静的な画面＝Pages」「動的なAPI＝Workers」と呼び分けて進めます。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="データを保存する場所" duration="2">
+        <p>アプリで扱う様々なデータ（ユーザー情報、投稿、画像など）を保存するため、Cloudflare は用途に合わせて複数のデータストアを提供しています。</p>
+<h2 is-upgraded>D1 (リレーショナルデータベース)</h2>
+<ul>
+<li><strong>役割</strong>: 表（テーブル）形式でキッチリとデータを管理するデータベース (SQLiteベース)。</li>
+<li><strong>特徴</strong>: 「ユーザー一覧」や「投稿とコメントの関係」など、複雑な条件でデータを検索・保存するのに使います。</li>
+<li><strong>IT部で最も頻繁に使うメインのデータベースです。</strong></li>
+</ul>
+<h2 is-upgraded>KV (Key-Value ストア)</h2>
+<ul>
+<li><strong>役割</strong>: 「名前（Key）」と「値（Value）」のペアをシンプルに保存する辞書のような場所。</li>
+<li><strong>特徴</strong>: 非常に高速で読み取れるため、「一時的な設定」や「短期間で消えてもいい一時データ（キャッシュ）」などに使います。</li>
+</ul>
+<h2 is-upgraded>R2 (オブジェクトストレージ)</h2>
+<ul>
+<li><strong>役割</strong>: 画像、動画、PDF などの「大きなファイル（バイナリ）」を保存する巨大な倉庫。</li>
+<li><strong>特徴</strong>: D1データベースには画像そのものは入らないため、画像はR2に保存し、D1には「R2のどこに置いたか（URL）」だけを記録します。</li>
+<li><strong>「ファイルのダウンロード時の通信料（エグレス料金）が無料」</strong> という最強のメリットがあります。</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="まとめ：IT部のアーキテクチャ" duration="2">
+        <p>私たちが開発する Web アプリは、この <strong>「Cloudflare エコシステム」</strong> の上で成り立っています。</p>
+<ol type="1">
+<li>ユーザーが <strong>Pages</strong> にアクセスし、React の画面を表示する。</li>
+<li>画面から <strong>Workers</strong> (Hono) へデータ取得のお願い（リクエスト）を送る。</li>
+<li>Workers が <strong>D1</strong> (DB) や <strong>R2</strong> (画像) からデータを取得し、画面に返す。</li>
+</ol>
+<h2 is-upgraded>次のステップへ</h2>
+<p>以上が、Cloudflare で使われるサービスの「概念」です。</p>
+<p>詳しいコードの書き方や、具体的な設定方法（<code>wrangler</code> の使い方など）は、今後の <strong>「フロントエンド」「バックエンド」それぞれのトラック</strong> で、実際に手を動かしながら学びます！</p>
+<p>まずはこの「役割分担」と「サービスの名称」を、IT部内での会話で使えるようになりましょう。</p>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/claat-public/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/prettify.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+
+  <script src="playground.js"></script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#ccfbf1', 'primaryTextColor': '#134e4a', 'primaryBorderColor': '#14b8a6', 'lineColor': '#0f766e', 'secondaryColor': '#f0fdfa', 'tertiaryColor': '#ffffff' }}}%%
+sequenceDiagram
+    participant Client
+    participant Server
+    
+    Client->>Server: HTTP Request
+    Note right of Client: Method (POST)<br/>URL (/api/login)<br/>Headers (Content-Type)<br/>Body ({"id":"..."})
+    
+    Server-->>Client: HTTP Response
+    Note left of Server: Status (200 OK)<br/>Headers (Set-Cookie)<br/>Body ({"token":"..."})

@@ -1,0 +1,465 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Part 2 Training</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+
+  <link rel="stylesheet" href="playground.css">
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14" ga4id=""></google-codelab-analytics>
+  <google-codelab codelab-gaid=""
+                  codelab-ga4id=""
+                  id="part-2"
+                  title="Part 2 Training"
+                  environment="web"
+                  feedback-link="https://github.com/gakusai-UoA/sosho-2026">
+    
+      <google-codelab-step label="Section 02 目次" duration="2">
+        <p>本セクションでは、データを動的に処理するための「JavaScriptの基本ロジック」を学びます。</p>
+<ol type="1">
+<li><strong>制御構文 (Control Flow)</strong><ul>
+<li>if文, ショートサーキット(<code>&&</code>, <code>||</code>), Null合成演算子(<code>??</code>)</li>
+</ul>
+</li>
+<li><strong>関数 (Functions) の進化</strong><ul>
+<li>関数とは？, アロー関数, コールバック</li>
+</ul>
+</li>
+<li><strong>配列とその操作</strong><ul>
+<li>配列の基本, プロパティ, メソッド(<code>map</code>, <code>filter</code>, <code>find</code>)</li>
+</ul>
+</li>
+</ol>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="制御構文 (Control Flow)" duration="2">
+        <p>プログラムは一本道ではありません。「もし在庫があれば」「もしエラーなら」といった<strong>分岐</strong>が必要です。</p>
+<h2 is-upgraded>1-1. 基本の if 文</h2>
+<pre><code language="language-javascript" class="language-javascript">const score = 85;
+
+// 条件式が true の場合のみ実行される
+if (score &gt;= 80) {
+  console.log(&#34;合格！おめでとう&#34;);
+} else {
+  // 条件式が false の場合
+  console.log(&#34;不合格...再挑戦しよう&#34;);
+}
+</code></pre>
+<h2 is-upgraded>読みやすいですが、条件が増えると行数が長くなりがちです。</h2>
+<h2 is-upgraded>ロジックの深掘り (Short-Circuit &amp; Nullish)</h2>
+<p>論理演算子 (<code>&&</code>, <code>||</code>) は、単なる <code>true/false</code> 判定以上のことができます。</p>
+<h2 is-upgraded>1-2. ショートサーキット評価 : AND (<code>&&</code>) (1/2)</h2>
+<p><strong>「左から順に見て、結果が決まった瞬間に止まる」</strong> 性質のことです。</p>
+<ul>
+<li><strong>左が </strong><strong><code>false</code></strong><strong> の場合</strong>： 右側を見ることなく、即座に終了します（結果は <code>false</code>）。これを <strong>ショートサーキット（短絡）</strong> と呼びます。</li>
+<li><strong>左が </strong><strong><code>true</code></strong><strong> の場合</strong>： 「右側も見ないと結果が決まらない」ため、右側まで進みます。そして、<strong>右側の値をそのまま結果として返します。</strong></li>
+</ul>
+<h2 is-upgraded>1-2. ショートサーキット評価 : AND (<code>&&</code>) (2/2)</h2>
+<pre><code language="language-javascript" class="language-javascript">const isLoggedIn = true;
+const userName = &#34;Shake&#34;;
+
+// isLoggedIn が true なので、右側の &#34;Shake&#34; が結果になる
+const result = isLoggedIn &amp;&amp; userName;
+console.log(result); // &#34;Shake&#34;
+</code></pre>
+<h2 is-upgraded>1-3. ショートサーキット評価 : 実践活用</h2>
+<p>「条件を満たす時だけ実行する（満たさない時は何もしない）」場合に便利です。</p>
+<pre><code language="language-javascript" class="language-javascript">const debugMode = true;
+
+// debugModeがONの時だけログを出す
+debugMode &amp;&amp; console.log(&#34;現在はデバッグモードです&#34;);
+</code></pre>
+<p><code>if (debugMode) { ... }</code> と書くよりも短く、意図が明確になります。</p>
+<h2 is-upgraded>1-4. デフォルト値の設定：OR演算 (<code>||</code>)</h2>
+<p><code>||</code> は「左側が <strong>Falsy（無効な値）</strong> なら、右側の予備を使う」という動きをします。 これを利用して「デフォルト（初期値）」を設定することがよくあります。</p>
+<pre><code language="language-javascript" class="language-javascript">// inputName が未入力(&#34;&#34;)や未定義(undefined)なら &#34;ゲスト&#34; にする
+const inputName = &#34;&#34;;
+const displayName = inputName || &#34;ゲスト&#34;;
+
+console.log(displayName); // &#34;ゲスト&#34; (空文字は無効扱いになる)
+</code></pre>
+<h2 is-upgraded>1-5. OR演算 (<code>||</code>) の思わぬ落とし穴</h2>
+<p><code>||</code> は <code>0</code> や <code>""</code>（空文字）も「無効」と判定してしまうため、<strong>数値の0</strong> を扱うアプリ（点数や在庫など）ではバグの原因になります。</p>
+<pre><code language="language-javascript" class="language-javascript">// 「0点」という立派な記録なのに...
+const score = 0;
+
+// 0 は Falsy なので、予備の値(10)が採用されてしまう！
+const displayScore = score || 10;
+console.log(displayScore); // 10 (0点のはずなのに上書きされた)
+</code></pre>
+<h2 is-upgraded>1-6. 救世主：Null合成演算子 (<code>??</code>)</h2>
+<p>この問題を解決するために登場したのが <code>??</code> です。 <strong>「完全に無 (null か undefined)」の時だけ</strong> 右側の予備を採用します。</p>
+<pre><code language="language-javascript" class="language-javascript">const score = 0;
+
+// 0 は「無」ではないので、そのまま採用される！
+const displayScore = score ?? 10;
+console.log(displayScore); // 0 (正しい！)
+</code></pre>
+<p>モダンな開発では、予期せぬバグを防ぐために基本的に <strong><code>??</code></strong> を推奨します。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="|| と ?? の比較まとめ" duration="2">
+        <p>どちらも「予備の値を設定する」役割ですが、<strong>「0 や 空文字 を有効な値として認めるか？」</strong> が最大の違いです。</p>
+<table>
+<tr><td colspan="1" rowspan="1"><p>演算子</p>
+</td><td colspan="1" rowspan="1"><p>右側（予備）を採用する条件</p>
+</td><td colspan="1" rowspan="1"><p>特徴</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong><code>||</code></strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>Falsy</strong> (0, &#34;&#34;, null, undefined)</p>
+</td><td colspan="1" rowspan="1"><p><code>0</code> や <code>""</code> も「無効」として弾く</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong><code>??</code></strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>Nullish</strong> (null, undefined)</p>
+</td><td colspan="1" rowspan="1"><p><code>0</code> や <code>""</code> は「有効」として認める</p>
+</td></tr>
+</table>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="関数 (Functions) の進化" duration="2">
+        <h2 is-upgraded>2-1. 関数 (Functions) とは？ (1/2)</h2>
+<p>関数とは <strong>「複数の処理（手順）をひとつにまとめて、名前をつける」</strong> 仕組みです。 例えば「お風呂に入る」という行動を考えてみましょう。</p>
+<ul>
+<li>風呂に入る <ul>
+<li>お湯を入れる</li>
+<li>服を脱ぐ</li>
+<li>体を洗う</li>
+<li>湯船に浸かる</li>
+<li>上がる</li>
+<li>体を拭く</li>
+</ul>
+</li>
+</ul>
+<p>これを、<strong>「お風呂に入る」</strong> という一言にまとめるためのものが、<strong>「関数」</strong> です。</p>
+<pre><code language="language-javascript" class="language-javascript">const fillBath = () =&gt; console.log(&#34;1. お湯を入れます&#34;);
+const undress = () =&gt; console.log(&#34;2. 服を脱ぎます&#34;);
+const washBody = () =&gt; console.log(&#34;3. 体を洗います&#34;);
+const soakInTub = () =&gt; console.log(&#34;4. 湯船に浸かります&#34;);
+const getOutOfBath = () =&gt; console.log(&#34;5. お風呂から上がります&#34;);
+const dryBody = () =&gt; console.log(&#34;6. 体を拭きます&#34;);
+
+// 「お風呂に入る」という処理の塊（関数）を作る
+function takeABath() {
+  fillBath();  // 1. お湯を入れる
+  undress();   // 2. 服を脱ぐ
+  washBody();  // 3. 体を洗う
+  soakInTub(); // 4. 湯船に浸かる
+  getOutOfBath(); // 5. 上がる
+  dryBody();   // 6. 体を拭く
+}
+
+// 次からは「お風呂に入る」と一言書くだけで、全部実行される！
+takeABath();
+</code></pre>
+<p>いつもお風呂に入る時にわざわざ手順を全て説明しないように、複数の処理をまとめて一言で呼べるようにしたのが、<strong>「関数」</strong> という概念です。</p>
+<h2 is-upgraded>2-1. 関数 (Functions) とは？ (2/2)</h2>
+<p>もう一つの重要な役割が <strong>「入力（引数）を受け取り、出力（戻り値）を返す」</strong> ことです。</p>
+<p class="image-container"><img alt="alt text" src="img/0.png"></p>
+<p><strong>「自動販売機」</strong> をイメージすると分かりやすいです。</p>
+<ul>
+<li><strong>引数 (Arguments)</strong>: 投入するお金やボタン（入力）</li>
+<li><strong>戻り値 (Return Value)</strong>: 出てくるジュース（出力）</li>
+</ul>
+<pre><code language="language-javascript" class="language-javascript">// お金(money)を受け取って、結果(戻り値)を返す関数
+function buyDrink(money) {
+  if (money &gt;= 150) {
+    return &#34;コーラ&#34;; // 外に結果を返す
+  } else {
+    return &#34;お金が足りませんでした&#34;;
+  }
+}
+const myDrink = buyDrink(200); // 200円を入れる
+console.log(myDrink); // &#34;コーラ&#34;
+</code></pre>
+<h2 is-upgraded>2-2. 関数の歴史と進化</h2>
+<p>JavaScriptの関数は、時代とともに書き方が進化してきました。 なぜ進化が必要だったのでしょうか？ 関数の実際の書き方と、その新旧について見ていきましょう。</p>
+<h2 is-upgraded>2-3. 昔の書き方：関数宣言 (Function Declaration)</h2>
+<pre><code language="language-javascript" class="language-javascript">function add(a, b) {
+  return a + b;
+}
+</code></pre>
+<p>「関数宣言」と呼ばれる古い書き方です。 現在でも問題なく動きますが、少し記述が長くなります。</p>
+<h2 is-upgraded>2-4. 今の書き方：アロー関数 (Arrow Functions)</h2>
+<pre><code language="language-javascript" class="language-javascript">const add = (a, b) =&gt; {
+  return a + b;
+};
+</code></pre>
+<p>ES6(2015)で登場した、現代のWeb開発で主流の書き方です。 関数を <code>const</code>（定数）に代入する形で作るため、すっきりと記述できます。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="なぜ書き方が進化したのか？ (コラム)" duration="2">
+        <p>古い書き方には <strong>「巻き上げ（Hoisting）」</strong> という、予期せぬバグを引き起こす仕様がありました。</p>
+<pre><code language="language-javascript" class="language-javascript">// 古い書き方：定義する前に呼び出せてしまう！（巻き上げ）
+const result1 = oldAdd(10, 20); // 30 (なぜか動いてしまう)
+function oldAdd(a, b) { return a + b; }
+
+// 今の書き方：定義する前には使えない（安全！）
+const result2 = newAdd(10, 20); // ❌ ちゃんとエラーになる！
+const newAdd = (a, b) =&gt; { return a + b; };
+</code></pre>
+<p>アロー関数（と <code>const</code>）を使うことで、<strong>「上から下へ、必ず定義してから使う」</strong> という他の言語では当たり前のルールが強制されるため、コードが格段に安全になります。</p>
+<h2 is-upgraded>2-5. アロー関数の構文バリエーション (1/2)</h2>
+<p>アロー関数には「省略記法」があり、これが多用されます。</p>
+<h2 is-upgraded>基本形</h2>
+<pre><code language="language-javascript" class="language-javascript">const double = (num) =&gt; {
+  return num * 2;
+};
+</code></pre>
+<h2 is-upgraded>省略形</h2>
+<p>処理が1行で、値を返すだけなら <code>{}</code> と <code>return</code> を消せます。</p>
+<pre><code language="language-javascript" class="language-javascript">const double = (num) =&gt; num * 2;
+</code></pre>
+<p>ただし、コードの可読性は少し下がります。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="アロー関数の戻り値 (練習問題)" duration="2">
+        <p>以下の関数 <code>getPrice</code> を実行した結果は？</p>
+<pre><code language="language-javascript" class="language-javascript">const getPrice = (price) =&gt; {
+  price * 1.1;
+};
+console.log(getPrice(100));
+</code></pre>
+<ol type="1">
+<li><code>110</code></li>
+<li><code>100</code></li>
+<li><code>undefined</code></li>
+<li><code>null</code></li>
+</ol>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="解説 (解説)" duration="2">
+        <p><strong>正解: 3. </strong></p>
+<p><strong><code>undefined</code></strong></p>
+<p><code>{}</code> (波括弧) を書いた場合、明示的に <code>return</code> を書かないと戻り値は <code>undefined</code> になります。</p>
+<pre><code language="language-javascript" class="language-javascript">// 正しい書き方 A (returnあり)
+const getPrice = (price) =&gt; {
+  return price * 1.1;
+};
+
+// 正しい書き方 B (Implicit Return: 波括弧なし)
+const getPrice = (price) =&gt; price * 1.1;
+</code></pre>
+<h2 is-upgraded>2-6. コールバック関数とは？ (1/2)</h2>
+<p><strong>「あとで実行してもらうために渡す関数」</strong> のことです。 他の関数に対して、引数として「これを実行してね」と関数を預けるイメージです。</p>
+<h2 is-upgraded>身近な例：</h2>
+<ul>
+<li><strong>アラーム</strong>: 「7時になったら、この音を鳴らす（関数）」と予約する。</li>
+<li><strong>デリバリー</strong>: 「料理ができたら、インターホンを鳴らす（関数）」と伝える。</li>
+</ul>
+<h2 is-upgraded>2-6. コールバック関数とは？ (2/2)</h2>
+<h2 is-upgraded>基本コード：</h2>
+<pre><code language="language-javascript" class="language-javascript">const greet = () =&gt; console.log(&#34;こんにちは！&#34;);
+
+// 3秒後に greet を実行してね、と渡す
+setTimeout(greet, 3000);
+</code></pre>
+<h2 is-upgraded>2-7. なぜアロー関数が好まれるのか？ (1/2)</h2>
+<p>アロー関数が好まれるもう一つの理由として、<strong>「コールバック関数」として使いやすい</strong> ということが挙げられます。</p>
+<pre><code language="language-javascript" class="language-javascript">// 従来の書き方
+setTimeout(function () {
+  console.log(&#34;1秒経過&#34;);
+}, 1000);
+
+// アロー関数
+setTimeout(() =&gt; console.log(&#34;1秒経過&#34;), 1000);
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="配列とその操作" duration="2">
+        <p><strong>配列</strong> とは同じ種類のデータが順番に並んだ <strong>「データの連なり（リスト）」</strong> です。 配列の操作には、<code>for</code> や <code>while</code> を使うこともできますが、JavaScriptには配列の操作に特化した <strong>「配列メソッド」</strong> が用意されています。</p>
+<h2 is-upgraded>3-1. 配列の基本</h2>
+<p>まずは「入れ物」としての使い方です。配列の要素には <strong>インデックス番号</strong> が振られていて、0番目から数えます。 (だからこの講座は Section0 から始まっています)</p>
+<pre><code language="language-javascript" class="language-javascript">const fruits = [&#34;りんご&#34;, &#34;バナナ&#34;, &#34;みかん&#34;];
+
+// 0番目から数える (重要！)
+console.log(fruits[0]); // &#34;りんご&#34;
+console.log(fruits[1]); // &#34;バナナ&#34;
+</code></pre>
+<ul>
+<li>プログラミングでは「1から」ではなく <strong>「0から」</strong> 数えるのがルールです。</li>
+</ul>
+<h2 is-upgraded>3-2. 配列が持つプロパティ</h2>
+<p>配列には、変数と同様に <strong>「プロパティ」</strong> が用意されています。 プロパティには <code>()</code> を付けません。最もよく使うのが <code>length</code>（長さ）です。</p>
+<pre><code language="language-javascript" class="language-javascript">const fruits = [&#34;りんご&#34;, &#34;バナナ&#34;];
+console.log(fruits.length); // 2 (データの数)
+</code></pre>
+<p>「最後の要素を取り出す」など、要素の数が知りたい時に活躍します。</p>
+<h2 is-upgraded>3-3. 配列の操作メソッド (push / pop)</h2>
+<p>配列の中身を操作するための <strong>「メソッド」</strong> も用意されています。 メソッドは関数なので、使うときは <code>()</code> を付けます。</p>
+<pre><code language="language-javascript" class="language-javascript">array.method()
+</code></pre>
+<h2 is-upgraded>配列のメソッド - push/pop</h2>
+<pre><code language="language-javascript" class="language-javascript">const fruits = [&#34;りんご&#34;, &#34;バナナ&#34;];
+
+// push(): 配列の「末尾」にデータを追加する
+fruits.push(&#34;みかん&#34;); 
+console.log(fruits); // [&#34;りんご&#34;, &#34;バナナ&#34;, &#34;みかん&#34;]
+
+// pop(): 配列の「末尾」のデータを取り出して削除する
+const lastFruit = fruits.pop();
+console.log(lastFruit); // &#34;みかん&#34;
+console.log(fruits); // [&#34;りんご&#34;, &#34;バナナ&#34;]
+</code></pre>
+<h2 is-upgraded>3-4. 配列のメソッド - map (1/2)</h2>
+<p><strong>.map() は「変換工場」です。</strong></p>
+<p>ベルトコンベア（配列）に乗って流れてくる材料（要素）を、一つずつ加工して、新しい製品（新しい配列）として送り出します。</p>
+<ul>
+<li>入力: <code>[ , ,  ]</code></li>
+<li>処理: <code>カットして焼く</code></li>
+<li>出力: <code>[ , ,  ]</code></li>
+</ul>
+<p><strong>数は変わりません。</strong> 中身の形が変わります。</p>
+<h2 is-upgraded>3-5. 配列のメソッド - 実装 (2/2)</h2>
+<pre><code language="language-javascript" class="language-javascript">const prices = [100, 200, 300];
+
+// 全商品を1.1倍（税込）にする
+const taxPrices = prices.map((price) =&gt; price * 1.1);
+
+console.log(taxPrices); // [110, 220, 330]
+</code></pre>
+<p>map()の第一引数(上記では<code>(price) => price * 1.1</code>)は、アロー関数で、処理の内容を記述します。</p>
+<h2 is-upgraded>3-6. 配列のメソッド - filter (1/2)</h2>
+<p><strong>.filter() は「セキュリティ・ゲート（選別機）」です。</strong></p>
+<p>条件（チケットや年齢制限など）に合致する要素だけを通し、合わないものを弾きます。</p>
+<ul>
+<li>入力: <code>[ , , ,  ]</code> (学生、先生、学生、不審者)</li>
+<li>処理: <code>学生か先生のみ通す</code></li>
+<li>出力: <code>[ , ,  ]</code></li>
+</ul>
+<p><strong>数は減る可能性があります。</strong> 中身の形（人そのもの）は変わりません。</p>
+<h2 is-upgraded>3-6. 配列のメソッド - filter (2/2)</h2>
+<pre><code language="language-javascript" class="language-javascript">const scores = [50, 90, 40, 80];
+
+// 60点以上だけ合格リストに入れる
+const passed = scores.filter((score) =&gt; score &gt;= 60);
+
+console.log(passed); // [90, 80]
+</code></pre>
+<p>filterの第一引数(上記では<code>(score) => score >= 60</code>)もアロー関数で、条件を記述します。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="配列操作の使い分け (練習問題)" duration="2">
+        <p>「商品リストから<strong>300円以下のものだけ</strong>を取り出したい」。 使うべきメソッドは？</p>
+<pre><code language="language-javascript" class="language-javascript">const prices = [100, 500, 200];
+const budgetPrices = prices.____((p) =&gt; p &lt;= 300);
+
+console.log(budgetPrices);
+
+// @test: budgetPrices.length === 2 &amp;&amp; budgetPrices.includes(100) &amp;&amp; budgetPrices.includes(200)
+</code></pre>
+<ol type="1">
+<li><code>.map()</code></li>
+<li><code>.filter()</code></li>
+<li><code>.push()</code></li>
+<li><code>.forEach()</code></li>
+</ol>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="解説 (解説)" duration="2">
+        <p><strong>正解: 2. </strong></p>
+<p><strong><code>.filter()</code></strong></p>
+<ul>
+<li><strong>Filter</strong>: 条件に合うものを「残す」。数が減る可能性がある。</li>
+<li><strong>Map</strong>: 全員を「変形させる」。数は変わらない。</li>
+</ul>
+<p>「リスト変換」ならMap、「絞り込み・検索」ならFilter、と覚えましょう。</p>
+<h2 is-upgraded>3-6. メソッドチェーン (組み合わせ)</h2>
+<p>これらのメソッドは繋げることができます。 「60点以上（合格）の点数を抽出し、全員にボーナス（+10点）を加点したい」という場合：</p>
+<pre><code language="language-javascript" class="language-javascript">const scores = [50, 90, 40, 80];
+
+const result = scores
+  .filter((score) =&gt; score &gt;= 60) // まず合格点だけを抽出 [90, 80]
+  .map((score) =&gt; score + 10);    // さらにボーナスを加点 [100, 90]
+
+console.log(result); // [100, 90]
+</code></pre>
+<p>処理の流れが左から右へ（上から下へ）流れるように読めるのが特徴です。</p>
+<h2 is-upgraded>3-7. その他の重要メソッド (.find, .includes)</h2>
+<h2 is-upgraded>.find() : 探索</h2>
+<pre><code language="language-javascript" class="language-javascript">const array = [5, 12, 8, 130, 44];
+
+const found = array.find((element) =&gt; element &gt; 10);
+console.log(found);
+</code></pre>
+<p><strong>「条件に合う最初のひとつを探す」</strong> 配列全体ではなく、特定の1件（例：IDが一致するユーザー）が欲しい時に使います。戻り値は <code>true</code> か <code>false</code> ではなく、<strong>要素そのもの</strong>（見つからなければ <code>undefined</code>）です。</p>
+<h2 is-upgraded>.includes() : 包含チェック</h2>
+<pre><code language="language-javascript" class="language-javascript">const array = [5, 12, 8, 130, 44];
+
+const hasElement = array.includes(8);
+
+console.log(hasElement);
+</code></pre>
+<p><strong>「含まれているかチェックする」</strong> 単純に <code>true</code> か <code>false</code> が返ります。 「許可リストに入っているか？」などの権限チェックによく使います。</p>
+<h2 is-upgraded>3-8. 配列のスプレッド構文 (Spread Syntax)</h2>
+<p><code>...</code> (ドット3つ) を使うことで、配列の中身を <strong>「展開（スプレッド）」</strong> して別の配列に合体させることができます。 今後の開発で頻繁に登場する便利な構文です。</p>
+<pre><code language="language-javascript" class="language-javascript">const listA = [&#34;Apple&#34;, &#34;Banana&#34;];
+const listB = [&#34;Cherry&#34;];
+
+// リストAとリストBの中身を展開し、間に &#34;Orange&#34; を挟んで合体
+const combined = [...listA, &#34;Orange&#34;, ...listB];
+
+console.log(combined); 
+// [&#34;Apple&#34;, &#34;Banana&#34;, &#34;Orange&#34;, &#34;Cherry&#34;]
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Section 02 まとめ" duration="2">
+        <p>このセクションで、 <strong>「動的なWebアプリ」</strong> を作るための土台が組み上がりました。</p>
+<ol type="1">
+<li><strong>Logic</strong>: if文とショートサーキット(<code>&&</code>, <code>||</code>)、Null合成(<code>??</code>)で、条件分岐を自在に操る。</li>
+<li><strong>Functions</strong>: アロー関数とコールバックで、処理をコンパクトに定義して渡す。</li>
+<li><strong>Data (Arrays)</strong>: 配列の強力なメソッド(<code>map</code>, <code>filter</code>)で、リストデータを華麗に変換・抽出する。</li>
+</ol>
+<p>次回は、JavaScriptの総仕上げとして、より複雑なデータ構造である <strong>「オブジェクト」</strong> と <strong>「データの不変性（Immutability）」</strong> について学びます。</p>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/claat-public/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/prettify.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+
+  <script src="playground.js"></script>
+</body>
+</html>

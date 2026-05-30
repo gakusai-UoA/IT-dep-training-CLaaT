@@ -1,0 +1,25 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2026-05-30T11:37:03+09:00",
+  "id": "part-4",
+  "duration": 58,
+  "title": "Part 4 Training",
+  "summary": "Part 4 Training",
+  "source": "part-4.md",
+  "theme": "",
+  "status": [
+    "published"
+  ],
+  "category": [
+    "webdevelopment",
+    "training"
+  ],
+  "tags": [
+    "web"
+  ],
+  "feedback": "https://github.com/gakusai-UoA/sosho-2026",
+  "url": "part-4"
+}

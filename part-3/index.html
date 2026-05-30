@@ -1,0 +1,250 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Part 3 Training</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+
+  <link rel="stylesheet" href="playground.css">
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14" ga4id=""></google-codelab-analytics>
+  <google-codelab codelab-gaid=""
+                  codelab-ga4id=""
+                  id="part-3"
+                  title="Part 3 Training"
+                  environment="web"
+                  feedback-link="https://github.com/gakusai-UoA/sosho-2026">
+    
+      <google-codelab-step label="オブジェクト (Objects) のモダンな扱い方" duration="2">
+        <p>名前付きデータの集合体です。 ここでも「いかに簡潔に書くか」「いかに安全に書くか」が進化しています。</p>
+<h2 is-upgraded>1-1. JSON (JavaScript Object Notation) (1/2)</h2>
+<p>JSONは、 <strong>「データをやり取りするための共通ルール（フォーマット）」</strong> です。 JavaScriptの書き方をベースにしていますが、JSのオブジェクトそのものではありません。</p>
+<h2 is-upgraded>1-1. JSON (JavaScript Object Notation) (2/2)</h2>
+<p>「JSのオブジェクト」と「JSON」の違いは、<strong>「組み立て済みの家具」</strong> と <strong>「段ボールに入った家具」</strong> に例えられます。</p>
+<ul>
+<li><strong>オブジェクト（組み立て済み）</strong>: プログラム上ですぐに使える状態のデータ。 <ul>
+<li><code>user.name</code> のように直接データを取り出したり、書き換えたりできます。</li>
+</ul>
+</li>
+<li><strong>JSON（段ボール梱包）</strong>: 別のPCやサーバーに「送る・保存する」ために、実体をただの文字列（テキスト）にした状態。</li>
+</ul>
+<h2 is-upgraded>家具（データ）の送り方</h2>
+<p>インターネットを通じてデータを送るには、<strong>一度段ボール（JSON）に梱包する</strong> 必要があります。</p>
+<ol type="1">
+<li><strong>箱に詰める (</strong><strong><code>JSON.stringify</code></strong><strong>)</strong><ul>
+<li>組み立て済みのオブジェクトを、ペタンコの「JSON文字列」にする。</li>
+</ul>
+</li>
+<li><strong>送る・保存する</strong><ul>
+<li>ただのテキストなので、インターネットでどこへでも送れる。</li>
+</ul>
+</li>
+<li><strong>箱から出して組み立てる (</strong><strong><code>JSON.parse</code></strong><strong>)</strong><ul>
+<li>届いたJSON文字列を、プログラムで使える「オブジェクト」に復元する。</li>
+</ul>
+</li>
+</ol>
+<h2 is-upgraded>1-1-1. JSONの具体例：よくあるパターン (1/2)</h2>
+<p>構文ルールは <strong>「キーを必ず </strong></p>
+<p><strong><code>" "</code></strong></p>
+<p><strong> (ダブルクォート) で囲む」</strong> こと。非常に厳格です。</p>
+<h2 is-upgraded>1. 単体のデータ (User)</h2>
+<pre><code language="language-json" class="language-json">{
+  &#34;id&#34;: 101,
+  &#34;name&#34;: &#34;田中 太郎&#34;,
+  &#34;isAdmin&#34;: false
+}
+</code></pre>
+<h2 is-upgraded>1-1-1. JSONの具体例：よくあるパターン (2/2)</h2>
+<p>配列 <code>[ ]</code> の中にオブジェクト <code>{ }</code> が複数並ぶ、データ一覧などを表現する際によく使うパターンです。</p>
+<h2 is-upgraded>2. リストデータ (Products)</h2>
+<pre><code language="language-json" class="language-json">[
+  { &#34;id&#34;: 1, &#34;name&#34;: &#34;PC&#34;, &#34;price&#34;: 100000 },
+  { &#34;id&#34;: 2, &#34;name&#34;: &#34;Mouse&#34;, &#34;price&#34;: 3000 }
+]
+</code></pre>
+<h2 is-upgraded>1-1-2. JSONの具体例：高度な構造（ネスト）</h2>
+<p>オブジェクトの中にオブジェクト/配列を「入れ子」にすると綺麗に表現できます。</p>
+<h2 is-upgraded>3. 入れ子構造 (Nested)</h2>
+<pre><code language="language-json" class="language-json">{
+  &#34;event&#34;: &#34;学園祭&#34;,
+  &#34;location&#34;: &#34;A棟ホール&#34;,
+  &#34;schedule&#34;: [
+    { &#34;time&#34;: &#34;10:00&#34;, &#34;title&#34;: &#34;開会式&#34; },
+    { &#34;time&#34;: &#34;11:00&#34;, &#34;title&#34;: &#34;LIVE&#34; }
+  ],
+  &#34;contact&#34;: {
+    &#34;email&#34;: &#34;info@example.com&#34;,
+    &#34;tel&#34;: &#34;03-xxxx-xxxx&#34;
+  }
+}
+</code></pre>
+<h2 is-upgraded>1-1-3. まとめる：JSONで扱える型</h2>
+<p>JSONでは、プログラムで使う主要なデータをすべて表現できます。</p>
+<table>
+<tr><td colspan="1" rowspan="1"><p>型</p>
+</td><td colspan="1" rowspan="1"><p>例</p>
+</td><td colspan="1" rowspan="1"><p>備考</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>文字列</strong></p>
+</td><td colspan="1" rowspan="1"><p><code>"Hello"</code></p>
+</td><td colspan="1" rowspan="1"><p>必ずダブルクォート</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>数値</strong></p>
+</td><td colspan="1" rowspan="1"><p><code>123</code>, <code>0.5</code></p>
+</td><td colspan="1" rowspan="1"><p>そのまま書く</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>真偽値</strong></p>
+</td><td colspan="1" rowspan="1"><p><code>true</code>, <code>false</code></p>
+</td><td colspan="1" rowspan="1"><p>そのまま書く</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>Null</strong></p>
+</td><td colspan="1" rowspan="1"><p><code>null</code></p>
+</td><td colspan="1" rowspan="1"><p>空であることを示す</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>配列</strong></p>
+</td><td colspan="1" rowspan="1"><p><code>[...]</code></p>
+</td><td colspan="1" rowspan="1"><p>データのリスト</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>オブジェクト</strong></p>
+</td><td colspan="1" rowspan="1"><p><code>{...}</code></p>
+</td><td colspan="1" rowspan="1"><p>名前付きデータの集合</p>
+</td></tr>
+</table>
+<h2 is-upgraded>1-1-4. JSONの具体例：アクセス許可リスト (1/2)</h2>
+<p>全体が大きなObjectであり、その中にまた別のObjectが入ります。</p>
+<p>{   &#34;allowList&#34;: { </p>
+<p>    &#34;user_123&#34;: {       &#34;read&#34;: true,       &#34;write&#34;: false,       &#34;roles&#34;: [&#34;editor&#34;]     }</p>
+<p>    , </p>
+<p>    &#34;user_456&#34;: {       &#34;read&#34;: true,       &#34;write&#34;: true,       &#34;roles&#34;: [&#34;admin&#34;]     }</p>
+<p>  } }</p>
+<h2 is-upgraded>1-1-4. JSONの具体例：アクセス許可リスト (2/2)</h2>
+<p><strong>青い枠 </strong></p>
+<p><strong><code>{ }</code></strong></p>
+<p><strong> : 全体のデータ<br></strong> プロパティ名 <code>allowList</code> にデータをまとめています。 </p>
+<p><strong>緑の枠 </strong></p>
+<p><strong><code>{ }</code></strong></p>
+<p><strong> : 各ユーザーごとの詳細データ<br></strong> これも立派なひとつのObjectです。 </p>
+<p>このように、JSONでは<strong>Objectをマトリョーシカのように重ねる</strong>ことで、大規模で複雑なデータも整理して送ることができます。</p>
+<h2 is-upgraded>1-2. オプショナルチェーン</h2>
+<p>深層にあるデータにアクセスする際、途中に <code>null</code> があるとアプリがクラッシュすることがあります。</p>
+<pre><code language="language-javascript" class="language-javascript">const user = null;
+const name = user.profile.name;
+// TypeError: Cannot read properties of null
+</code></pre>
+<p>API通信待ちの間など、データが不完全な状態は頻繁に起こります。 いちいち <code>if</code> でチェックするのは大変です。</p>
+<h2 is-upgraded>1-3. オプショナルチェーン : <code>?.</code></h2>
+<p><strong>「もしあれば進む、なければそこで止まる」</strong> 演算子です。</p>
+<pre><code language="language-javascript" class="language-javascript">const user = {};
+
+//  エラー！ (Cannot read property &#39;name&#39; of undefined)
+// console.log(user.profile.name);
+
+//  エラーにならず、undefined が返る
+console.log(user.profile?.name);
+</code></pre>
+<p>「もしかしたら無いかもしれない」データには、迷わず <code>?.</code> をつけましょう。</p>
+<h2 is-upgraded>1-4. プロパティの省略記法 (Shorthand)</h2>
+<p>オブジェクトを<strong>組み立てる時</strong>、変数名とプロパティ名が同じなら <code>:</code> 以降を省略できます。 非常に頻繁に使われる、基本テクニックです。</p>
+<pre><code language="language-javascript" class="language-javascript">const name = &#34;Shake&#34;;
+const role = &#34;Admin&#34;;
+
+// 昔：わざわざ同じ名前を2回書いていた
+const oldUser = { name: name, role: role };
+
+// 今：スッキリ！
+const newUser = { name, role };
+
+console.log(newUser); // { name: &#34;Shake&#34;, role: &#34;Admin&#34; }
+</code></pre>
+<h2 is-upgraded>1-5. 分割代入 (Destructuring)</h2>
+<p>今度はオブジェクトからデータを<strong>取り出す時</strong>の魔法です。 いちいち <code>user.name</code> のように書かず、構造に合わせて一発で変数として抽出します。</p>
+<pre><code language="language-javascript" class="language-javascript">const user = { id: 1, name: &#34;Shake&#34;, role: &#34;Admin&#34; };
+
+// 昔：一つずつ取り出していた
+const oldId = user.id;
+const oldName = user.name;
+
+// 今：左辺に {} を書いて一気に取り出す！
+const { id, name } = user;
+
+console.log(name); // &#34;Shake&#34;
+</code></pre>
+<h2 is-upgraded>1-6. 高度な分割代入 (別名・ネスト)</h2>
+<h2 is-upgraded>変数名の変更</h2>
+<p>APIから来たデータの名前が分かりにくい時などにリネームします。</p>
+<pre><code language="language-javascript" class="language-javascript">const user = { id: 1, name: &#34;Shake&#34;, role: &#34;Admin&#34; };
+const { name: userName } = user;
+console.log(userName); // &#34;Shake&#34; (name変数は作られない)
+</code></pre>
+<h2 is-upgraded>ネストしたデータの取得</h2>
+<p>深い階層のデータも一発で取れます。</p>
+<pre><code language="language-javascript" class="language-javascript">const response = { data: { title: &#34;Hello&#34; } };
+const {
+  data: { title },
+} = response;
+
+console.log(title); // &#34;Hello&#34;
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="オブジェクトでのスプレッド構文の活用" duration="2">
+        <pre><code language="language-javascript" class="language-javascript">const baseUser = { name: &#34;Shake&#34;, active: false };
+const extraInfo = { role: &#34;Admin&#34; };
+
+// baseUserの中身を展開し、activeだけ true で上書きしつつ合体
+const updatedUser = { 
+  ...baseUser, 
+  ...extraInfo,
+  active: true 
+};
+
+console.log(updatedUser); // { name: &#34;Shake&#34;, role: &#34;Admin&#34;, active: true }
+
+// { name: &#34;Shake&#34;, role: &#34;Admin&#34;, active: true }
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Section 03 まとめ" duration="2">
+        <p>モダンなJavaScriptでは、オブジェクトを <strong>「より短く・よりスマートに」</strong> 扱うための記法が進化しています。</p>
+<ol type="1">
+<li><strong>JSON</strong>: データを送受信するための厳格な文字列フォーマット。</li>
+<li><strong>省略記法</strong>: 変数名と同じプロパティ名は <code>:</code> 以降を省略可能。</li>
+<li><strong>分割代入</strong>: <code>{ }</code> を使って、構造に合わせて一発で変数を取り出す。</li>
+</ol>
+<p>これらの記法は、今後の Hono / React 開発で <strong>息をするように使います</strong>。少しずつ慣れていきましょう！</p>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/claat-public/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/prettify.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+
+  <script src="playground.js"></script>
+</body>
+</html>

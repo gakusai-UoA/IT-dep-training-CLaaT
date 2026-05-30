@@ -1,0 +1,239 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>自分の名前に置き換えて実行</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+
+  <link rel="stylesheet" href="playground.css">
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14" ga4id=""></google-codelab-analytics>
+  <google-codelab codelab-gaid=""
+                  codelab-ga4id=""
+                  id="part-0"
+                  title="自分の名前に置き換えて実行"
+                  environment="web"
+                  feedback-link="https://github.com/gakusai-UoA/sosho-2026">
+    
+      <google-codelab-step label="そもそも Git と GitHub とは？" duration="2">
+        <p>チームで開発を行う際、必ず直面する問題があります。</p>
+<ul>
+<li>「誰がどこを変更したかわからない！」</li>
+<li>「前の状態に戻したいけど、上書きしてしまった...」</li>
+<li>「最終版(3).zip みたいなファイルが無限に増える」</li>
+</ul>
+<p>これを根本から解決するのが <strong>「バージョン管理システム」</strong> です。</p>
+<h2 is-upgraded>Git（ギット）：最強のタイムマシン</h2>
+<p>Gitは、ファイルに対する全ての変更履歴を記録し、<strong>いつでも過去の状態に戻せる</strong>ようにする仕組み（ツール）です。</p>
+<ul>
+<li><strong>作業の「スナップショット」を保存</strong>: 「昨日の変更」と「今日の変更」を手軽に見比べられます。</li>
+<li><strong>ローカル（手元のパソコン）で動く</strong>: インターネットがなくても変更履歴を管理できます。</li>
+</ul>
+<h2 is-upgraded>GitHub（ギットハブ）：クラウド上の書庫</h2>
+<p>GitHubは、Gitで管理している変更履歴のデータをインターネット上で共有・保存できる**「クラウドサービス」**です。</p>
+<ul>
+<li><strong>チームメンバーと連携</strong>: みんなで同じファイル群（リポジトリ）を持ち寄って結合できます。</li>
+<li><strong>バックアップ</strong>: ローカルのPCが壊れても、GitHub上にデータが残っていれば安心です。</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="ローカルとリモートの関係" duration="2">
+        <p>Gitの作業は、大きく「ローカル（自分のPC）」と「リモート（GitHub）」での通信に分かれます。まずは全体の流れを図解で理解しましょう。</p>
+<p class="image-container"><img alt="width:100%" src="img/a5db251556abc39f.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="ハンズオン：準備編" duration="2">
+        <p>ここからは実際にターミナル（WindowsならPowerShell/WSL、MacならTerminal）を開いて操作します。</p>
+<h2 is-upgraded>まずはGitをインストールしよう</h2>
+<p>まだPCにGitが入っていない場合は、以下の手順でインストールします。</p>
+<ul>
+<li><strong>Windowsの方</strong>: <a href="https://gitforwindows.org/" target="_blank">Git for Windows</a> にアクセスし、インストーラーをダウンロードして実行してください。設定はすべてそのまま「Next」で進めてOKです。</li>
+<li><strong>Macの方</strong>: ターミナルを開いて <code>xcode-select --install</code> と入力し、案内画面に従ってインストールします（または <a href="https://git-scm.com/download/mac" target="_blank">公式サイト</a> からインストーラーを利用）。</li>
+</ul>
+<h2 is-upgraded>Node.js をインストールしよう</h2>
+<p>Web 開発（特に React など）には <strong>Node.js</strong> という実行環境が必須です。 公式サイトから推奨版（LTS）をダウンロードしてインストールしましょう。</p>
+<ol type="1">
+<li><strong>公式サイトにアクセス</strong>: <a href="https://nodejs.org/ja" target="_blank">nodejs.org/ja</a> にアクセスします。</li>
+<li><strong>LTS（推奨版）をダウンロード</strong>: 「LTS」または「推奨版」と書かれたボタンをクリックしてインストーラーをダウンロードします。</li>
+<li><strong>インストーラーを実行</strong>: ダウンロードしたファイルを開き、設定はすべてデフォルト（そのままで「Next」や「インストール」）で進めてください。</li>
+</ol>
+<h2 is-upgraded>インストールの確認</h2>
+<p>無事にインストールが終わったら、ターミナルで以下のコマンドを打ってみましょう。</p>
+<pre><code language="language-bash" class="language-bash">git --version
+node -v
+</code></pre>
+<p>それぞれバージョン番号が表示されれば準備完了です！</p>
+<h2 is-upgraded>自分の名前とメールアドレスを登録</h2>
+<p>チーム開発において、「誰がその変更をしたか」を記録するために、最初に一度だけ情報を登録します。</p>
+<pre><code language="language-bash" class="language-bash">### 自分の名前に置き換えて実行
+git config --global user.name &#34;Your Name&#34;
+
+### 自分のメールアドレスに置き換えて実行
+git config --global user.email &#34;your.email@example.com&#34;
+</code></pre>
+<p><em>※これはPC全体の設定になります。</em></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="ハンズオン：ローカルで履歴を作る" duration="2">
+        <p>まずはクラウド（GitHub）のことは忘れましょう。 自分のパソコンの中だけで「セーブデータ」を作ってみます。</p>
+<h2 is-upgraded>Step 1: 実験用のフォルダを作って移動する</h2>
+<pre><code language="language-bash" class="language-bash">mkdir git-practice
+cd git-practice
+</code></pre>
+<h2 is-upgraded>Step 2: <code>git init</code> (Gitの管理を開始)</h2>
+<p>このフォルダを「Gitで履歴を管理する箱（レポジトリ）」に進化させます。</p>
+<pre><code language="language-bash" class="language-bash">git init
+</code></pre>
+<p><code>Initialized empty Git repository in ...</code> と表示されれば成功です！ これでこのフォルダは、ただのフォルダから<strong>魔法のフォルダ</strong>になりました。</p>
+<h2 is-upgraded>Step 3: ファイルを作成してみる</h2>
+<p>テキストファイルを作って、何か書き込んでみましょう。</p>
+<pre><code language="language-bash" class="language-bash">echo &#34;Hello Git!&#34; &gt; hello.txt
+</code></pre>
+<p>現在のGitの状態を確認する魔法のコマンド <code>git status</code> を打ってみます。</p>
+<pre><code language="language-bash" class="language-bash">git status
+</code></pre>
+<p>赤字で <code>hello.txt</code> （まだGitが追跡していないファイル）が表示されます。</p>
+<h2 is-upgraded>Step 4: <code>git add</code>（箱詰め・ステージング）</h2>
+<p>ファイルの変更を行ったら、まずは <strong>「どの変更を次回のセーブデータに含めるか」</strong> を選びます。</p>
+<pre><code language="language-bash" class="language-bash">### hello.txt をセーブ対象として選ぶ
+git add hello.txt
+
+### (参考) フォルダ内のすべての変更をまとめて選ぶ場合は `git add .`
+</code></pre>
+<p>もう一度 <code>git status</code> を打つと、<code>hello.txt</code> が緑色（セーブ準備完了）になっているはずです！</p>
+<h2 is-upgraded>Step 5: <code>git commit</code>（セーブの確定）</h2>
+<p>箱に荷物を詰め終わったら、<strong>「どんな変更をしたか」わかるメッセージ（ラベル）を貼って封印</strong>します。これが1つの「セーブデータ」です。</p>
+<pre><code language="language-bash" class="language-bash">git commit -m &#34;初めてのコミット：挨拶を追加&#34;
+</code></pre>
+<p>これでローカル（自分のPC）に歴史が1ページ刻まれました！</p>
+<h2 is-upgraded>Step 6: 履歴を確認する <code>git log</code></h2>
+<p>ちゃんとセーブデータが作られたか、過去の歴史を振り返ってみましょう。</p>
+<pre><code language="language-bash" class="language-bash">git log
+</code></pre>
+<p>先ほど設定した「あなたの名前」と、「初めてのコミット：挨拶を追加」というメッセージ、そして英数字の羅列（コミットID）が表示されていれば完璧です！（終了するには <code>q</code> キーを押します）</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="ハンズオン：GitHubと繋げる" duration="2">
+        <p>今のままではデータは自分のPCの中にしかありません。 これをGitHubにアップロード（共有）してみましょう！</p>
+<h2 is-upgraded>Step 1: GitHub上に「空の倉庫」を作る</h2>
+<ol type="1">
+<li>GitHub (https://github.com) にログイン。</li>
+<li>右上の <code>+</code> ボタンから <strong>「New repository」</strong> を選択。</li>
+<li>Repository name に <code>git-practice</code> と入力。</li>
+<li>そのまま一番下の緑のボタン <strong>「Create repository」</strong> をクリック！</li>
+</ol>
+<h2 is-upgraded>Step 2: リモートリポジトリとの通信設定</h2>
+<p>GitHubが「これを自分のPCで実行してね」と教えてくれるコマンドをコピペして実行します。</p>
+<pre><code language="language-bash" class="language-bash">### メインのブランチ名を &#34;main&#34; に統一する（最近の標準です）
+git branch -M main
+
+### 先ほど作ったGitHubの空倉庫(_あなたのユーザー名_)を &#34;origin&#34; という名前で登録
+git remote add origin https://github.com/あなたのユーザー名/git-practice.git
+</code></pre>
+<p>これで、手元のPCとGitHubが一本の線で繋がりました。</p>
+<h2 is-upgraded>Step 3: <code>git push</code>（クラウドへアップロード）</h2>
+<p>いよいよ手元のセーブデータをクラウドに送信します！</p>
+<pre><code language="language-bash" class="language-bash">### &#34;origin&#34; (GitHub) の &#34;main&#34; ブランチへデータを送る！
+### (-u は次回以降 git push だけで送れるようにする便利オプション)
+git push -u origin main
+</code></pre>
+<p>ブラウザで先ほどのGitHubのページをリロード（F5）してみてください！ あなたが書いた <code>hello.txt</code> が表示されているはずです！🎉</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="ハンズオン：チーム作業のシミュレーション" duration="2">
+        <p>チーム開発では、「他の人がGitHubに反映した最新の変更」を自分のPCに取り込む作業が頻繁に発生します。</p>
+<h2 is-upgraded>GitHub上で直接ファイルを変更してみる</h2>
+<ol type="1">
+<li>GitHubのページで <code>hello.txt</code> をクリックし、鉛筆アイコン(Edit)を押します。</li>
+<li>2行目に <code>This is from GitHub!</code> と追記します。</li>
+<li>下の <strong>「Commit changes」</strong> ボタンを押して保存します。</li>
+</ol>
+<p><em>※これで、「クラウド上の方が、手元のPCより進んでいる状態」になりました。</em></p>
+<h2 is-upgraded><code>git pull</code>（最新版のダウンロード）</h2>
+<p>あなたの手元のPCは、まだ2行目が追加されていない古い状態です。 GitHubから最新の歴史をダウンロード（同期）しましょう！</p>
+<pre><code language="language-bash" class="language-bash">git pull origin main
+</code></pre>
+<p>ファイルの中身を確認してみましょう。</p>
+<pre><code language="language-bash" class="language-bash">cat hello.txt
+</code></pre>
+<p>クラウドでの変更が手元に反映されていれば成功です！</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="基本コマンド早見表まとめ（チートシート）" duration="2">
+        <table>
+<tr><td colspan="1" rowspan="1"><p>コマンド</p>
+</td><td colspan="1" rowspan="1"><p>やること（意味）</p>
+</td><td colspan="1" rowspan="1"><p>タイミング</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong><code>git clone <URL></code></strong></p>
+</td><td colspan="1" rowspan="1"><p>GitHubの倉庫をPCに丸ごとコピー</p>
+</td><td colspan="1" rowspan="1"><p>プロジェクト参加時(初回のみ)</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong><code>git pull</code></strong></p>
+</td><td colspan="1" rowspan="1"><p>クラウドの最新変更を手元に反映</p>
+</td><td colspan="1" rowspan="1"><p><strong>作業を始める前</strong>に必ず実行</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong><code>git status</code></strong></p>
+</td><td colspan="1" rowspan="1"><p>現在の変更状況を確認</p>
+</td><td colspan="1" rowspan="1"><p>迷ったらとりあえず打つ</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong><code>git add .</code></strong></p>
+</td><td colspan="1" rowspan="1"><p>変更したファイルをセーブ対象に選ぶ</p>
+</td><td colspan="1" rowspan="1"><p>作業が一区切りした時</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong><code>git commit -m "..."</code></strong></p>
+</td><td colspan="1" rowspan="1"><p>メッセージを付けて歴史に保存</p>
+</td><td colspan="1" rowspan="1"><p><code>add</code> の直後</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong><code>git push</code></strong></p>
+</td><td colspan="1" rowspan="1"><p>保存した歴史をクラウドにアップロード</p>
+</td><td colspan="1" rowspan="1"><p>セーブをみんなに共有したい時</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong><code>git log</code></strong></p>
+</td><td colspan="1" rowspan="1"><p>過去の歴史(コミット履歴)を振り返る</p>
+</td><td colspan="1" rowspan="1"><p>過去の変更を確認したい時</p>
+</td></tr>
+</table>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/claat-public/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/prettify.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+
+  <script src="playground.js"></script>
+</body>
+</html>
